@@ -1,0 +1,21 @@
+
+nav ul li a {
+    color: #7baaa4;
+    font-size: 16pt;
+    cursor: pointer;
+}
+nav ul li a div {
+    padding: 14px 10px;
+}
+nav ul li {
+    display: inline-block;
+    left: 0px;
+    position: relative;
+    text-align: left;
+}
+nav ul {
+    max-width: 900px;
+    min-width: 440px;
+    margin: auto;
+    padding: 0;
+}
