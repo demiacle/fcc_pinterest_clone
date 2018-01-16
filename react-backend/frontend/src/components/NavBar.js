@@ -26,9 +26,16 @@ class NavBar extends Component {
             </a>
           </li>
           <li>
+            <a href="http://localhost:3001/logout">
+              <div>
+                Logout
+              </div>
+            </a>
+          </li>
+          <li>
             <a href="#" onClick={(e)=>this.test(e)}>
               <div>
-                Login
+                test
               </div>
             </a>
           </li>

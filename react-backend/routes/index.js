@@ -22,6 +22,10 @@ router.get('/twitterCallback', (req,res)=>{
     res.redirect('/');
   })
 })
+router.get('/logout', (req,res=>{
+  req.logout();
+  res.json({logout: true})
+}))
 
 
 module.exports = router;
