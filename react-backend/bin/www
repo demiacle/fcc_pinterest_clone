@@ -4,9 +4,12 @@
  * Module dependencies.
  */
 
+require('dotenv').config();
 var app = require('../app');
 var debug = require('debug')('react-backend:server');
 var http = require('http');
+var mongoose = require('mongoose')
+mongoose.connect(process.env.DB);
 
 /**
  * Get port from environment and store in Express.
