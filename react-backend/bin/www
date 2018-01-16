@@ -4,7 +4,9 @@
  * Module dependencies.
  */
 
-require('dotenv').config();
+const path = require('path')
+var envPath = path.join( __dirname, '/../.env' )
+require('dotenv').config( { path: envPath } );
 var app = require('../app');
 var debug = require('debug')('react-backend:server');
 var http = require('http');

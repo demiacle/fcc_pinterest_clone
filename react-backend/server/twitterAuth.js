@@ -9,7 +9,7 @@ var User = new mongoose.Schema({
 passport.use(new TwitterStrategy({
   consumerKey: process.env.TWITTER_KEY,
   consumerSecret: process.env.TWITTER_SECRET,
-  callbackURL: "http://127.0.0.1:3001/"
+  callbackURL: "localhost:3001/twitterCallback"
 },
   function (token, tokenSecret, profile, cb) {
     User.findOrCreate({ twitterId: profile.id }, function (err, user) {
@@ -17,9 +17,3 @@ passport.use(new TwitterStrategy({
     });
   }
 ));
-
-function redirectToForm() {
-  passport.authenticate('twitter');
-}
-
-module.exports = redirectToForm;
