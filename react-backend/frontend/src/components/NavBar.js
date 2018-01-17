@@ -25,6 +25,7 @@ class NavBar extends Component {
               </div>
             </a>
           </li>
+          { this.props.isLoggedIn &&
           <li>
             <a href="http://localhost:3001/logout">
               <div>
@@ -32,6 +33,7 @@ class NavBar extends Component {
               </div>
             </a>
           </li>
+          }
           <li>
             <a href="#" onClick={(e)=>this.test(e)}>
               <div>
@@ -39,7 +41,7 @@ class NavBar extends Component {
               </div>
             </a>
           </li>
-          { this.props.isLoggedIn ?
+          { this.props.isLoggedIn &&
           <li>
             <a>
               <div>
@@ -47,8 +49,8 @@ class NavBar extends Component {
               </div>
             </a>
           </li>
-          :''}
-          { this.props.isLoggedIn ?
+          }
+          { this.props.isLoggedIn &&
           <li>
             <a>
               <div>
@@ -56,7 +58,7 @@ class NavBar extends Component {
               </div>
             </a>
           </li>
-          :''}
+          }
         </ul>
       </nav>
     );

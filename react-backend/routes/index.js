@@ -6,6 +6,7 @@ var passport = require('passport')
 router.get('/', function(req, res, next) {
   console.log( req.session.id)
   res.send('yip');
+  login();
 });
 
 router.get('/login', (req,res,next) =>{
@@ -16,16 +17,23 @@ router.get('/login', (req,res,next) =>{
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 }, passport.authenticate('twitter') );
-router.get('/twitterCallback', (req,res)=>{
-  console.log('got this far')
-  passport.authenticate('twitter', {failureRedirect: '/error' }, (req,res)=>{
+router.get('/twitterCallback', 
+  (req, res, next) => {
+    console.log('calling twitter callback')
+    next();
+  },
+  passport.authenticate('twitter', { failureRedirect: '/' }),
+  (req, res) => {
     res.redirect('/');
-  })
-})
-router.get('/logout', (req,res=>{
+  }
+)
+router.get('/logout', (req, res) => {
   req.logout();
-  res.json({logout: true})
-}))
+  res.json({ logout: true })
+})
+router.get('/error', (req,res) =>{
+  res.send('You have encountered an error');
+})
 
 
 module.exports = router;

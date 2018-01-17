@@ -7,7 +7,9 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var app = express();
 var session = require('express-session');
+var passport = require('passport')
 
+app.use(passport.initialize())
 app.use(session({ secret: 'blehgh', cookie: { maxAge: 60000 }}))
 
 // uncomment after placing your favicon in /public
