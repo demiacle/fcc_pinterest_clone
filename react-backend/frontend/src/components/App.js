@@ -15,6 +15,12 @@ class App extends Component {
   componentWillMount() {
     document.title = 'PICPAC'
   }
+  test(e){
+    e.preventDefault();
+    fetch( '/login', {credentials: 'include'} )
+      .then((d) => { return d.text() })
+      .then((d) => { console.log(d) })
+  }
 
   renderWall(){
     // TODO query elements
@@ -36,7 +42,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <NavBar />
+      <NavBar test={this.test}/>
         <header className="App-header">
           <h1 className="App-title">
             <div className='spin'></div>

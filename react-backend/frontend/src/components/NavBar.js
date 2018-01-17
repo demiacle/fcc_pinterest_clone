@@ -3,10 +3,6 @@ import React, { Component } from 'react';
 import './NavBar.css';
 
 class NavBar extends Component {
-  test(e){
-    e.preventDefault();
-    fetch( '/login', {credentials: 'include'} ).then((d)=>{ return d.blob()}).then((d)=>{console.log(d)})
-  }
   render() {
     return (
       <nav>
@@ -35,7 +31,7 @@ class NavBar extends Component {
           </li>
           }
           <li>
-            <a href="#" onClick={(e)=>this.test(e)}>
+            <a href="#" onClick={(e)=>this.props.test(e)}>
               <div>
                 test
               </div>

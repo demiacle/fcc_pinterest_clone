@@ -10,7 +10,7 @@ var session = require('express-session');
 var passport = require('passport')
 
 app.use(passport.initialize())
-app.use(session({ secret: 'blehgh', cookie: { maxAge: 60000 }}))
+app.use(session({ secret: 'blehgh', cookie: { maxAge: 60000, secure: false }}))
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
