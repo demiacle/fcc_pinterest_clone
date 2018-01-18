@@ -30,7 +30,7 @@ class NavBar extends Component {
           </li>
           { this.props.isLoggedIn &&
           <li>
-            <a href="/myPics">
+            <a href="myPics" onClick={(e)=>this.props.viewUserPics(e)}>
               <div>
                 My pics
               </div>
@@ -39,16 +39,16 @@ class NavBar extends Component {
           }
           { this.props.isLoggedIn &&
           <li>
-            <a href="/upload">
+            <a href="showUploadForm" onClick={(e)=>this.props.showUploadForm(e)}>
               <div>
-                Upload pic
+                New pic
               </div>
             </a>
           </li>
           }
           { this.props.isLoggedIn &&
           <li className="right">
-            <a href="http://98.210.186.7:3001/logout">
+            <a href="logout" onClick={(e)=>this.props.logout(e)}>
               <div>
                 Logout
               </div>

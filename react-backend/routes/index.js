@@ -30,16 +30,16 @@ router.get('/userData', (req,res)=>{
 })
 router.get('/logout', (req, res) => {
   req.logout();
-  res.json({ logout: true })
+  res.json({ isLoggedIn: false })
 })
 router.get('/error', (req,res) =>{
   res.send('You have encountered a perplexing error');
 })
-router.get('/upload', (req,res)=>{
-  res.send('upload')
+router.get('/createLink', (req,res)=>{
+  res.json({ success: true })
 })
 router.get('/myPics', (req,res)=>{
-  res.send('mypics')
+  res.json({ success: true })
 })
 
 module.exports = router;
