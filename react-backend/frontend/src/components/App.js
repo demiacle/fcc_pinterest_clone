@@ -11,12 +11,23 @@ var masonryOptions = {
 }
 
 class App extends Component {
+  constructor(props){
+    super(props)
+    console.log('loads')
+    this.test = this.test.bind(this)
 
-  componentWillMount() {
-    document.title = 'PICPAC'
+  }
+
+  componentDidMount() {
+    fetch('/userData')
+      .then(res => res.json() )
+      .then( userData => this.someState( { userData } ) )
   }
   test(e){
     e.preventDefault();
+    alert(this.state.someState)
+    return;
+
     fetch( '/login', {credentials: 'include'} )
       .then((d) => { return d.text() })
       .then((d) => { console.log(d) })

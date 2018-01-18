@@ -11,28 +11,24 @@ router.get('/', function(req, res, next) {
 
 router.get('/login', (req,res,next) =>{
   console.log( req.session.id)
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Origin', req.headers.origin );
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  //res.header('Access-Control-Allow-Credentials', true);
+  //res.header('Access-Control-Allow-Origin', req.headers.origin );
+  //res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  //res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 }, passport.authenticate('twitter') );
 router.get('/twitterCallback', 
-  (req, res, next) => {
-    console.log('calling twitter callback')
-    next();
-  },
-  passport.authenticate('twitter', { failureRedirect: '/' }),
-  (req, res) => {
-    res.send('success');
-  }
+  passport.authenticate('twitter', { 
+    failureRedirect: '/error', 
+    successRedirect: process.env.FRONTEND_URL 
+  })
 )
 router.get('/logout', (req, res) => {
   req.logout();
   res.json({ logout: true })
 })
 router.get('/error', (req,res) =>{
-  res.send('You have encountered an error');
+  res.send('You have encountered a perplexing error');
 })
 
 

@@ -15,7 +15,7 @@ class NavBar extends Component {
             </a>
           </li>
           <li>
-            <a href="http://localhost:3001/login">
+            <a href="http://98.210.186.7:3001/login">
               <div>
                 Login
               </div>
@@ -23,7 +23,7 @@ class NavBar extends Component {
           </li>
           { this.props.isLoggedIn &&
           <li>
-            <a href="http://localhost:3001/logout">
+            <a href="http://98.210.186.7:3001/logout">
               <div>
                 Logout
               </div>
