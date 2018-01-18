@@ -23,6 +23,11 @@ router.get('/twitterCallback',
     successRedirect: process.env.FRONTEND_URL 
   })
 )
+router.get('/userData', (req,res)=>{
+  console.log( req.session.id)
+  var isLoggedIn = req.user ? true : false;
+  res.json({ isLoggedIn });
+})
 router.get('/logout', (req, res) => {
   req.logout();
   res.json({ logout: true })

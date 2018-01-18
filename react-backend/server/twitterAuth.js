@@ -15,14 +15,12 @@ userSchema.statics.findOneOrCreate = function findOneOrCreate( condition, callba
   })
 }
 var userModel = mongoose.model('user', userSchema )
-passport.serializeUser(function(user, done) {
-  done(null, user._id);
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
 });
 
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function (err, user) {
-    done(err, user);
-  });
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
 });
 
 passport.use(new TwitterStrategy({

@@ -13,19 +13,17 @@ var masonryOptions = {
 class App extends Component {
   constructor(props){
     super(props)
-    console.log('loads')
     this.test = this.test.bind(this)
-
   }
-
   componentDidMount() {
-    fetch('/userData')
+    fetch('/userData', {credentials: 'include'})
       .then(res => res.json() )
-      .then( userData => this.someState( { userData } ) )
+      .then( userData => this.setState( { userData } ) )
   }
   test(e){
     e.preventDefault();
-    alert(this.state.someState)
+    console.log(this.state)
+    alert(this.state.userData)
     return;
 
     fetch( '/login', {credentials: 'include'} )
