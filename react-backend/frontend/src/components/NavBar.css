@@ -1,12 +1,15 @@
 
-nav ul li a {
+nav a {
     color: #7baaa4;
     font-size: 16pt;
 }
-nav ul li a div {
+nav a:active {
+    color: #24a8ff;
+}
+nav div {
     padding: 14px 10px;
 }
-nav ul li {
+nav li {
     display: inline-block;
     left: 0px;
     position: relative;
@@ -17,4 +20,14 @@ nav ul {
     min-width: 440px;
     margin: auto;
     padding: 0;
+}
+
+.right {
+    float:right;
+}
+
+.abs {
+    position: absolute;
+    bottom: 0;
+    background-color: #fff78f;
 }

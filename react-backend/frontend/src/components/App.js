@@ -14,30 +14,27 @@ class App extends Component {
   constructor(props){
     super(props)
     this.test = this.test.bind(this)
+    this.state = {
+      isLoggedIn: false
+    }
   }
+  // Query initial state
   componentDidMount() {
     fetch('/userData', {credentials: 'include'})
       .then(res => res.json() )
-      .then( userData => this.setState( { userData } ) )
+      .then( res => this.setState( { isLoggedIn: res.isLoggedIn } ) )
   }
   test(e){
     e.preventDefault();
     console.log(this.state)
-    alert(this.state.userData)
-    return;
-
-    fetch( '/login', {credentials: 'include'} )
-      .then((d) => { return d.text() })
-      .then((d) => { console.log(d) })
   }
-
   renderWall(){
     // TODO query elements
     var elements = [ {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'} ]
     var childElements = elements.map((i, index)=> {
       return (
         <li key={index} className="grid-item">
-          <a href="#">
+          <a href={i.alt}>
             <img src={i.src} alt={i.alt} />
             <div>likes</div>
             <p className="caption">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
@@ -51,7 +48,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-      <NavBar test={this.test}/>
+      <NavBar test={this.test} isLoggedIn={this.state.isLoggedIn}/>
         <header className="App-header">
           <h1 className="App-title">
             <div className='spin'></div>

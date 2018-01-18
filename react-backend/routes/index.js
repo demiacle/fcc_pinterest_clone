@@ -35,6 +35,11 @@ router.get('/logout', (req, res) => {
 router.get('/error', (req,res) =>{
   res.send('You have encountered a perplexing error');
 })
-
+router.get('/upload', (req,res)=>{
+  res.send('upload')
+})
+router.get('/myPics', (req,res)=>{
+  res.send('mypics')
+})
 
 module.exports = router;
