@@ -6,7 +6,7 @@ var postSchema = new mongoose.Schema({
   link: String,
   caption: String,
   thumbsUp: [ String ],
-  date: Number 
+  dateEpoch: Number 
 })
 var postModel = mongoose.model('post', postSchema )
 
@@ -19,7 +19,7 @@ exports.addLink = (url, user, caption) => {
       url = prefix + url;
     }
     var post = new postModel({
-      user: user._id,
+      user: user.userName,
       link: url,
       caption: caption,
       dateEpoch: (new Date).getTime()
@@ -35,10 +35,13 @@ exports.addLink = (url, user, caption) => {
 }
 exports.getUserLinks = (user) => {
   return new Promise((resolve, reject) => {
-    postModel.find({ user: user._id }).lean().exec( (err, posts)=>{
+    postModel.find({ user: user.userName }).lean().exec( (err, posts)=>{
       for( var i = 0; i < posts.length; i++ ) {
         posts[i].thumbsUp = posts[i].thumbsUp.length;
       }
+      console.log( posts)
+      posts.sort((a,b)=>b.dateEpoch - a.dateEpoch)
+      console.log( posts)
       resolve( posts );
     })
   })
@@ -49,6 +52,7 @@ exports.getAllLinks = () => {
       for( var i = 0; i < posts.length; i++ ) {
         posts[i].thumbsUp = posts[i].thumbsUp.length;
       }
+      posts.sort((a,b)=>b.dateEpoch - a.dateEpoch)
       resolve( posts );
     })
   })

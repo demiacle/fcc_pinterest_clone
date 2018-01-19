@@ -88,8 +88,14 @@ class App extends Component {
   }
   addPost(post){
     this.setState(prev=>{
-      allPosts: prev.allPosts.unshift(post)
-      userPosts: prev.userPosts.push(post)
+        var allPosts = prev.allPosts.slice()
+        allPosts.unshift(post)
+        var userPosts = prev.userPosts.slice();
+        userPosts.push(post)
+      return {
+        allPosts,
+        userPosts
+      }
     })
     this.forceUpdate()
     setTimeout(()=>{console.log(this.state)}, 2000)

@@ -24,12 +24,14 @@ form label {
 }
 form input {
   vertical-align: text-bottom;
-  padding: 0px;
+  padding: 2px;
   font-size: 12pt;
   padding-left: 6px;
   width: 266px;
   margin-left: 4px;
   vertical-align: top;
+  border: none;
+  border-radius: 3px;
 }
 form div {
   height: 25px;
