@@ -27,8 +27,9 @@ class UploadForm extends Component {
       .then(res=>{
         if(res.error){
           alert( res.error )
+        } else {
+          this.props.addPost( res.post )
         }
-        // TODO redirect here
       })
       .catch(e=>{ alert('An error occured, please try again')})
   }

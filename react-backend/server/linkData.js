@@ -1,4 +1,5 @@
 var mongoose = require('mongoose')
+var http = require('http')
 
 var postSchema = new mongoose.Schema({
   user: String,
@@ -8,27 +9,25 @@ var postSchema = new mongoose.Schema({
 })
 var postModel = mongoose.model('post', postSchema )
 
-// TODO this needs to actually query the link and check its header
-function isImg(url) {
-  return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
-}
-exports.addLink = (link, user, caption) => {
+exports.addLink = (url, user, caption) => {
   return new Promise((resolve, reject) => {
-    link = encodeURIComponent(link)
-    if (isImg(link) === false) {
-      throw 'Error: Link source must be an image format of jpeg, jpg, gif, or png';
+    url = encodeURI(url)
+    url = url.replace('https', 'http')
+    var prefix = 'http://';
+    if (url.substr(0, prefix.length) !== prefix) {
+      url = prefix + url;
     }
     var post = new postModel({
       user: user._id,
-      link: link,
+      link: url,
       caption: caption
     })
-    post.save((err)=>{
+    post.save((err, doc)=>{
       if(err){
         console.log(err)
         throw 'An unexpected error happened'
       }
-      resolve();
+        resolve(doc.toObject());
     })
   })
 }

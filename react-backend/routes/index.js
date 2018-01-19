@@ -33,7 +33,7 @@ router.get('/error', (req,res) =>{
 })
 router.post('/createLink', requireLoggedIn, (req,res)=>{
   linkData.addLink( req.body.link, req.user, req.body.caption )
-    .then( ()=>res.json({ success: true }) )
+    .then( (post)=>res.json({ post }) )
     .catch( (e)=>{
       res.status(400).json({ error: e})
     } )

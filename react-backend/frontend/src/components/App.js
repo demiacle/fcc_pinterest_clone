@@ -18,6 +18,7 @@ class App extends Component {
     this.logout = this.logout.bind(this)
     this.showUploadForm = this.showUploadForm.bind(this)
     this.viewUserPosts = this.viewUserPosts.bind(this)
+    this.addPost = this.addPost.bind(this)
     this.state = {
       isLoggedIn: false,
       showUploadingForm: false,
@@ -52,7 +53,7 @@ class App extends Component {
         if( res.error ){
           alert( res.error )
         } else {
-          this.setState({userPosts:res.posts})
+          this.setState({userPosts:res.posts, isShowingUserPosts: true})
         }
       })
   }
@@ -65,11 +66,9 @@ class App extends Component {
     console.log(this.state)
   }
   renderWall(){
-    // TODO query element
     console.log('all posts')
     console.log( this.state.allPosts )
     var elements = this.state.isShowingUserPosts ? this.state.userPosts : this.state.allPosts;
-    //var elements = [ {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'} ]
     var childElements = elements.map((i, index)=> {
       return (
         <li key={index} className="grid-item">
@@ -85,8 +84,17 @@ class App extends Component {
     });
     return childElements;
   }
+  addPost(post){
+    this.setState(prev=>{
+      allPosts: prev.allPosts.push(post)
+      userPosts: prev.userPosts.push(post)
+    })
+    setTimeout(()=>{console.log(this.state)}, 2000)
+    // TODO THIS IS NOT TRIGGERING A RENDER
+  }
 
   render() {
+    console.log(this.state)
     return (
       <div className="App">
       <NavBar 
@@ -102,7 +110,7 @@ class App extends Component {
             <div className='spin'></div>
             PICPAC
             <div className='spin'></div>
-            { this.state.showUploadingForm && <UploadForm /> }
+            { this.state.showUploadingForm && <UploadForm addPost={this.addPost}/> }
           </h1>
         </header>
 
