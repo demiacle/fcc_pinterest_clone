@@ -116,6 +116,7 @@ class App extends Component {
         </header>
 
         <div id="theWall">
+        <p id="builtBy">Built by <a>Daniel Escobedo</a>:<a href="https://twitter.com/Demiacle">@Demiacle</a> using React, Express and masonry.js</p>
         <Masonry elementType={'ul'} options={masonryOptions} >
           {this.renderWall()}
         </Masonry>

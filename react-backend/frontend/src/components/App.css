@@ -43,11 +43,19 @@ a {
   max-width: 880px;
   min-width: 440px;
   margin: auto;
-  margin-top: 44px;
+  margin-top: 14px;
   overflow: hidden;
 }
 #theWall ul {
   display: grid;
   padding: 0;
   margin: 0 auto;
+}
+#builtBy {
+  text-align: center;
+  text-align: center;
+  color: #25958b;
+}
+#builtBy a {
+  font-weight: bold;
 }

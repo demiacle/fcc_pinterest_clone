@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import './Post.css';
 
 class Post extends Component {
+  //TODO fetch vote
+
+  //TODO fetch posts by user
+
   render() {
     var i = this.props.postData
     return <li className="grid-item">
@@ -16,7 +20,7 @@ class Post extends Component {
         <p className="userName">{i.user}</p>
         </a>
         <a href={"/vote/" + i._id }>
-        <span className="likes"><img src="three-arrow.png" />{i.thumbsUp}</span>
+        <span className="likes"><img src="three-arrow.png" alt="vote"/>{i.thumbsUp}</span>
         </a>
       </div>
       <p className="caption">{i.caption}</p>
