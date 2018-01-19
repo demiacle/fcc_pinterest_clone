@@ -25,7 +25,7 @@ passport.deserializeUser(function(obj, cb) {
 passport.use(new TwitterStrategy({
   consumerKey: process.env.TWITTER_KEY,
   consumerSecret: process.env.TWITTER_SECRET,
-  callbackURL: "http://98.210.186.7:3001/twitterCallback"
+  callbackURL: process.env.BACKEND_URL + "twitterCallback"
 },
   function (token, tokenSecret, profile, cb) {
     userModel.findOneOrCreate({ twitterId: profile.id }, function (err, user) {

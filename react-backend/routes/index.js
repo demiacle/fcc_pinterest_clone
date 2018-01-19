@@ -31,7 +31,7 @@ router.get('/error', (req,res) =>{
   res.send('You have encountered a perplexing error');
 })
 router.post('/createLink', requireLoggedIn, (req,res)=>{
-  linkData.addLink( req.body.link, req.user )
+  linkData.addLink( req.body.link, req.user, req.body.caption )
     .then( ()=>res.json({ success: true }) )
     .catch( (e)=>{
       res.status(400).json({ error: e})
