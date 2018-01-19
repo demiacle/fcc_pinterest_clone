@@ -1,22 +1,18 @@
 var express = require('express');
 var router = express.Router();
-var login = require('../server/twitterAuth.js')
+require('../server/twitterAuth.js')
+var linkData = require('../server/linkData.js')
 var passport = require('passport')
 
-router.get('/', function(req, res, next) {
-  console.log( req.session.id)
-  res.send('yip');
-  login();
-});
+function requireLoggedIn(req,res,next){
+  if( req.user ){
+    next();
+  } else {
+    res.status(403).json( {error:"You must be logged in to do that"});
+  }
+}
 
-router.get('/login', (req,res,next) =>{
-  console.log( req.session.id)
-  //res.header('Access-Control-Allow-Credentials', true);
-  //res.header('Access-Control-Allow-Origin', req.headers.origin );
-  //res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  //res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
-}, passport.authenticate('twitter') );
+router.get('/login', passport.authenticate('twitter') );
 router.get('/twitterCallback', 
   passport.authenticate('twitter', { 
     failureRedirect: '/error', 
@@ -24,7 +20,6 @@ router.get('/twitterCallback',
   })
 )
 router.get('/userData', (req,res)=>{
-  console.log( req.session.id)
   var isLoggedIn = req.user ? true : false;
   res.json({ isLoggedIn });
 })
@@ -35,11 +30,19 @@ router.get('/logout', (req, res) => {
 router.get('/error', (req,res) =>{
   res.send('You have encountered a perplexing error');
 })
-router.get('/createLink', (req,res)=>{
-  res.json({ success: true })
+router.post('/createLink', requireLoggedIn, (req,res)=>{
+  linkData.addLink( req.body.link, req.user )
+    .then( ()=>res.json({ success: true }) )
+    .catch( (e)=>{
+      res.status(400).json({ error: e})
+    } )
 })
-router.get('/myPics', (req,res)=>{
-  res.json({ success: true })
+router.get('/myPics', requireLoggedIn, (req,res)=>{
+  linkData.getUserLinks( req.user )
+    .then((payload) => {
+      res.json({ success: true }) 
+    })
+    .catch( ()=>res.redirect('/error'))
 })
 
 module.exports = router;

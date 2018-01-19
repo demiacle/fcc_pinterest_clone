@@ -8,14 +8,21 @@
   border: 1px solid #ddd;
   color: white;
   font-size: 14pt;
+  margin-top: 22px;
 }
 form label {
   font-size: 18pt;
+  display: inline-block;
+  width: 114px;
+  text-align: right;
 }
 form input {
   vertical-align: text-bottom;
   padding: 2px;
   font-size: 12pt;
+}
+form div {
+  height: 30px;
 }
 #clipboard {
   border-radius: 6px;

@@ -27,15 +27,13 @@ a {
   margin-left: 20px;
   margin-right: 20px;
 }
-
 .App-header {
   background-color: #5c8681;
-  height: 90px;
-  padding: 20px;
+  height: 100px;
+  padding: 10px;
   color: white;
   text-align: center;
 }
-
 .App-title {
   font-size: 26pt;
   margin-top: 0;
@@ -44,13 +42,11 @@ a {
 .App-intro {
   font-size: large;
 }
-
-
 #theWall {
   max-width: 880px;
   min-width: 440px;
   margin: auto;
-  margin-top: 20px;
+  margin-top: 44px;
   overflow: hidden;
 }
 .grid {
