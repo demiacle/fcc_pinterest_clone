@@ -4,7 +4,8 @@ import './UploadForm.css';
 class UploadForm extends Component {
   constructor(props){
     super(props)
-    this.updateInput = this.updateInput.bind(this)
+    this.updateLinkInput = this.updateLinkInput.bind(this)
+    this.updateCaptionInput = this.updateCaptionInput.bind(this)
     this.submitLinks = this.submitLinks.bind(this)
 
     this.state = {linkValue: '', captionValue: ''}
@@ -12,6 +13,9 @@ class UploadForm extends Component {
   componentDidMount(){
   }
   submitLinks(e) {
+    if( this.state.linkValue === '' || this.state.captionValue === '' ){
+      return;
+    }
     fetch('/createLink', {
       credentials: 'include',
       headers: {
@@ -30,24 +34,29 @@ class UploadForm extends Component {
       })
       .catch(e=>{ alert('An error occured, please try again')})
   }
-  updateInput(e){
-    this.setState({ value: e.target.value})
+  updateLinkInput(e){
+    this.setState({ linkValue: e.target.value})
+  }
+  updateCaptionInput(e){
+    this.setState({ captionValue: e.target.value})
   }
   focusInput(e){
-    e.focus()
+    if(e){
+      e.focus()
+    }
   }
   render() {
     return (
       <form action="javascript:void(0)" id="uploadForm">
         <div>
-        <label for="link">link:</label>
-          <input type="text" id="link" value={this.state.linkValue} onChange={this.updateInput} ref={this.focusInput} />
+        <label htmlFor="link">link:</label>
+          <input type="text" id="link" value={this.state.linkValue} onChange={this.updateLinkInput} ref={this.focusInput} required/>
           </div>
           <div>
-        <label for="caption">caption:</label>
-          <input type="text" id="caption" value={this.state.captionValue} onChange={this.updateInput} ref={this.focusInput} />
+        <label htmlFor="caption">caption:</label>
+          <input type="text" id="caption" value={this.state.captionValue} onChange={this.updateCaptionInput} ref={this.focusInput} required/>
         </div>
-        <button id="submit" onClick={this.submitLinks}>Submit</button>
+        <button id="submit" onClick={this.submitLinks}>submit</button>
       </form>
     )
   }

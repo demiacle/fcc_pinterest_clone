@@ -4,25 +4,35 @@
   border-radius: 20px;
   padding: 4px;
   width: 400px;
-  background-color: #93d4ff;
-  border: 1px solid #ddd;
+  background-color: #47a8e9;
+  border: 1px solid white;
   color: white;
   font-size: 14pt;
-  margin-top: 22px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+#submit:hover {
+  background-color:#338bc6;
+
 }
 form label {
-  font-size: 18pt;
+  font-size: 14pt;
   display: inline-block;
-  width: 114px;
+  width: 80px;
   text-align: right;
+  vertical-align: top;
 }
 form input {
   vertical-align: text-bottom;
-  padding: 2px;
+  padding: 0px;
   font-size: 12pt;
+  padding-left: 6px;
+  width: 266px;
+  margin-left: 4px;
+  vertical-align: top;
 }
 form div {
-  height: 30px;
+  height: 25px;
 }
 #clipboard {
   border-radius: 6px;
@@ -32,8 +42,4 @@ form div {
   height: 22px;
   margin-left: 6px;
   cursor: pointer;
-}
-form {
-  top: -6px;
-  position: relative;
 }
