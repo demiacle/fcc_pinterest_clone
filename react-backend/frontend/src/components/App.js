@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import NavBar from './NavBar';
+import Post from './Post';
 import UploadForm from './UploadForm';
 import Masonry from 'react-masonry-component'
 
@@ -72,17 +73,7 @@ class App extends Component {
     console.log( this.state.allPosts )
     var elements = this.state.isShowingUserPosts ? this.state.userPosts : this.state.allPosts;
     var childElements = elements.map((i, index)=> {
-      return (
-        <li key={index} className="grid-item">
-          <a href={i.link}>
-            <img src={i.link} alt={i.caption} />
-            <div>
-              <div className="userPortrait"><img src="https://twitter.com/PUBGpartners/profile_image?size=normal" /></div>
-              likes:<span>{i.thumbsUp}</span></div>
-            <p className="caption">{i.caption}</p>
-          </a>
-        </li>
-      )
+      return <Post postData={i} key={index}/>
     });
     return childElements;
   }
@@ -91,7 +82,7 @@ class App extends Component {
         var allPosts = prev.allPosts.slice()
         allPosts.unshift(post)
         var userPosts = prev.userPosts.slice();
-        userPosts.push(post)
+        userPosts.unshift(post)
       return {
         allPosts,
         userPosts
@@ -106,6 +97,7 @@ class App extends Component {
     console.log(this.state)
     return (
       <div className="App">
+
       <NavBar 
         test={this.test}
         isLoggedIn={this.state.isLoggedIn}
@@ -124,14 +116,11 @@ class App extends Component {
         </header>
 
         <div id="theWall">
-        <Masonry
-          className={'grid'}
-          elementType={'ul'}
-          options={masonryOptions}
-        >
-        {this.renderWall()}
+        <Masonry elementType={'ul'} options={masonryOptions} >
+          {this.renderWall()}
         </Masonry>
         </div>
+
       </div>
     );
   }
