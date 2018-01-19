@@ -3,7 +3,8 @@ var TwitterStrategy = require('passport-twitter')
 var mongoose = require('mongoose')
 
 var userSchema = new mongoose.Schema({
-  twitterId: String
+  twitterId: String,
+  userName: String
 })
 userSchema.statics.findOneOrCreate = function findOneOrCreate( condition, callback){
   var self = this;
@@ -28,7 +29,7 @@ passport.use(new TwitterStrategy({
   callbackURL: process.env.BACKEND_URL + "twitterCallback"
 },
   function (token, tokenSecret, profile, cb) {
-    userModel.findOneOrCreate({ twitterId: profile.id }, function (err, user) {
+    userModel.findOneOrCreate({ twitterId: profile.id, userName: profile.username }, function (err, user) {
       return cb(err, user);
     });
   }

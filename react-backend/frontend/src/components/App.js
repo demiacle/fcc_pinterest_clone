@@ -27,6 +27,7 @@ class App extends Component {
       allPosts: []
     }
   }
+
   // Check if user is logged in
   componentDidMount() {
     console.log('checking if user is logged in')
@@ -54,6 +55,7 @@ class App extends Component {
           alert( res.error )
         } else {
           this.setState({userPosts:res.posts, isShowingUserPosts: true})
+          this.forceUpdate()
         }
       })
   }
@@ -86,9 +88,10 @@ class App extends Component {
   }
   addPost(post){
     this.setState(prev=>{
-      allPosts: prev.allPosts.push(post)
+      allPosts: prev.allPosts.unshift(post)
       userPosts: prev.userPosts.push(post)
     })
+    this.forceUpdate()
     setTimeout(()=>{console.log(this.state)}, 2000)
     // TODO THIS IS NOT TRIGGERING A RENDER
   }

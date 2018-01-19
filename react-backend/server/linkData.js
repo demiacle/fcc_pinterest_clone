@@ -5,7 +5,8 @@ var postSchema = new mongoose.Schema({
   user: String,
   link: String,
   caption: String,
-  thumbsUp: [ String ] 
+  thumbsUp: [ String ],
+  date: Number 
 })
 var postModel = mongoose.model('post', postSchema )
 
@@ -20,7 +21,8 @@ exports.addLink = (url, user, caption) => {
     var post = new postModel({
       user: user._id,
       link: url,
-      caption: caption
+      caption: caption,
+      dateEpoch: (new Date).getTime()
     })
     post.save((err, doc)=>{
       if(err){
