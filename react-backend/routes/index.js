@@ -19,9 +19,10 @@ router.get('/twitterCallback',
     successRedirect: process.env.FRONTEND_URL 
   })
 )
-router.get('/userData', (req,res)=>{
+router.get('/userData', async (req,res)=>{
   var isLoggedIn = req.user ? true : false;
-  res.json({ isLoggedIn });
+  var posts = await linkData.getAllLinks();
+  res.json({ isLoggedIn, posts });
 })
 router.get('/logout', (req, res) => {
   req.logout();
@@ -39,8 +40,8 @@ router.post('/createLink', requireLoggedIn, (req,res)=>{
 })
 router.get('/myPics', requireLoggedIn, (req,res)=>{
   linkData.getUserLinks( req.user )
-    .then((payload) => {
-      res.json({ success: true }) 
+    .then((posts) => {
+      res.json({ posts }) 
     })
     .catch( ()=>res.redirect('/error'))
 })

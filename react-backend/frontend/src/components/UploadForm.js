@@ -10,8 +10,6 @@ class UploadForm extends Component {
 
     this.state = {linkValue: '', captionValue: ''}
   }
-  componentDidMount(){
-  }
   submitLinks(e) {
     if( this.state.linkValue === '' || this.state.captionValue === '' ){
       return;

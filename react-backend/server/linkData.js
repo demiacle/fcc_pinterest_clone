@@ -8,6 +8,7 @@ var postSchema = new mongoose.Schema({
 })
 var postModel = mongoose.model('post', postSchema )
 
+// TODO this needs to actually query the link and check its header
 function isImg(url) {
   return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
 }
@@ -31,11 +32,22 @@ exports.addLink = (link, user, caption) => {
     })
   })
 }
-
 exports.getUserLinks = (user) => {
   return new Promise((resolve, reject) => {
-    postModel.find({},(err, posts)=>{
-
+    postModel.find({ user: user._id }).lean().exec( (err, posts)=>{
+      for( var i = 0; i < posts.length; i++ ) {
+        posts[i].thumbsUp = posts[i].thumbsUp.length;
+      }
+      resolve( posts );
+    })
+  })
+}
+exports.getAllLinks = () => {
+  return new Promise((resolve, reject) => {
+    postModel.find({}).lean().exec((err, posts)=>{
+      for( var i = 0; i < posts.length; i++ ) {
+        posts[i].thumbsUp = posts[i].thumbsUp.length;
+      }
       resolve( posts );
     })
   })

@@ -17,10 +17,13 @@ class App extends Component {
     this.test = this.test.bind(this)
     this.logout = this.logout.bind(this)
     this.showUploadForm = this.showUploadForm.bind(this)
-    this.viewUserPics = this.viewUserPics.bind(this)
+    this.viewUserPosts = this.viewUserPosts.bind(this)
     this.state = {
       isLoggedIn: false,
-      showUploadingForm: false
+      showUploadingForm: false,
+      isShowingUserPosts: false,
+      userPosts: [],
+      allPosts: []
     }
   }
   // Check if user is logged in
@@ -28,19 +31,30 @@ class App extends Component {
     console.log('checking if user is logged in')
     fetch('/userData', {credentials: 'include'})
       .then(res => res.json() )
-      .then( res => this.setState( { isLoggedIn: res.isLoggedIn } ) )
+      .then( res => this.setState( { 
+        isLoggedIn: res.isLoggedIn,
+        allPosts: res.posts
+      } ) )
   }
   // Does not force reload for super speedy user experience
   logout(e){
     e.preventDefault();
-    // TODO load the stored wall
     this.setState({ isLoggedIn: false, showUploadingForm: false });
     fetch('/logout', {credentials: 'include'})
       .catch(err=>alert('You encountered an error while logging out.'))
   }
-  viewUserPics(e){
+  viewUserPosts(e){
     e.preventDefault();
-    alert('view user pics')
+    fetch('/myPics', {credentials: 'include'})
+      .then(res=>res.json())
+      .then(res=>{
+        console.log(res)
+        if( res.error ){
+          alert( res.error )
+        } else {
+          this.setState({userPosts:res.posts})
+        }
+      })
   }
   showUploadForm(e){
     this.setState({ showUploadingForm: true });
@@ -51,15 +65,20 @@ class App extends Component {
     console.log(this.state)
   }
   renderWall(){
-    // TODO query elements
-    var elements = [ {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'} ]
+    // TODO query element
+    console.log('all posts')
+    console.log( this.state.allPosts )
+    var elements = this.state.isShowingUserPosts ? this.state.userPosts : this.state.allPosts;
+    //var elements = [ {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'},  {src:'t.jpg', alt: 'bleh'} ]
     var childElements = elements.map((i, index)=> {
       return (
         <li key={index} className="grid-item">
-          <a href={i.alt}>
-            <img src={i.src} alt={i.alt} />
-            <div>likes</div>
-            <p className="caption">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor</p>
+          <a href={i.link}>
+            <img src={i.link} alt={i.caption} />
+            <div>
+              <div className="userPortrait"><img src="https://twitter.com/PUBGpartners/profile_image?size=normal" /></div>
+              likes:<span>{i.thumbsUp}</span></div>
+            <p className="caption">{i.caption}</p>
           </a>
         </li>
       )
@@ -75,8 +94,9 @@ class App extends Component {
         isLoggedIn={this.state.isLoggedIn}
         logout={this.logout}
         showUploadForm={this.showUploadForm}
-        viewUserPics={this.viewUserPics}
+        viewUserPosts={this.viewUserPosts}
       />
+
         <header className="App-header">
           <h1 className="App-title">
             <div className='spin'></div>
@@ -85,6 +105,7 @@ class App extends Component {
             { this.state.showUploadingForm && <UploadForm /> }
           </h1>
         </header>
+
         <div id="theWall">
         <Masonry
           className={'grid'}

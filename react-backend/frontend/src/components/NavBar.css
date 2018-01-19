@@ -16,7 +16,7 @@ nav li {
     text-align: left;
 }
 nav ul {
-    max-width: 900px;
+    max-width: 854px;
     min-width: 440px;
     margin: auto;
     padding: 0;
@@ -24,6 +24,7 @@ nav ul {
 
 .right {
     float:right;
+    margin-right: 6px;
 }
 
 .abs {

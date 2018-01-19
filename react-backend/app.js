@@ -9,7 +9,7 @@ var app = express();
 var session = require('express-session');
 var passport = require('passport')
 
-app.use(session({ secret: 'blehgh', cookie: { maxAge: 60 * 60 * 1000, secure: false }}))
+app.use(session({ secret: 'blehgh', cookie: { maxAge: 60 * 60 * 1000, secure: false }, resave: true, saveUninitialized: false }))
 app.use(passport.initialize())
 app.use(passport.session())
 
