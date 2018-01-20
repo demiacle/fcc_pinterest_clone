@@ -13,14 +13,16 @@ class Post extends Component {
         <img src={i.link} alt={i.caption} />
       </a>
       <div className="postHeader">
-        <a href={ "/postsBy/" + i.user }>
-        <div className="userPortrait">
-          <img src={i.user.profileUrl} alt="user portrait" />
-        </div>
-        <p className="userName">{i.user.userName}</p>
+        <a href={"/posts-by/" + i.user}>
+          <div className="portrait-name-container">
+            <div className="userPortrait">
+              <img src={i.user.profileUrl} alt="user portrait" />
+            </div>
+            <p className="userName">{i.user.userName}</p>
+          </div>
         </a>
-        <a href={"/vote/" + i._id }>
-        <span className="likes"><img src="three-arrow.png" alt="vote"/>{i.thumbsUp}</span>
+        <a href={"/vote/" + i._id}>
+          <span className="likes"><img src="three-arrow.png" alt="vote" />{i.thumbsUp}</span>
         </a>
       </div>
       <p className="caption">{i.caption}</p>

@@ -40,8 +40,8 @@ a {
   font-size: large;
 }
 #theWall {
-  max-width: 880px;
-  min-width: 440px;
+  max-width: 1000px;
+  min-width: 580px;
   margin: auto;
   margin-top: 14px;
   overflow: hidden;

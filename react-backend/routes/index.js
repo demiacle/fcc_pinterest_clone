@@ -19,7 +19,7 @@ router.get('/twitterCallback',
     successRedirect: process.env.FRONTEND_URL 
   })
 )
-router.get('/userData', async (req,res)=>{
+router.get('/user-data', async (req,res)=>{
   var isLoggedIn = req.user ? true : false;
   var posts = await linkData.getAllLinks();
   res.json({ isLoggedIn, posts });
@@ -31,19 +31,25 @@ router.get('/logout', (req, res) => {
 router.get('/error', (req,res) =>{
   res.send('You have encountered a perplexing error');
 })
-router.post('/createLink', requireLoggedIn, (req,res)=>{
+router.post('/create-link', requireLoggedIn, (req,res)=>{
   linkData.addLink( req.body.link, req.user, req.body.caption )
     .then( (post)=>res.json({ post }) )
     .catch( (e)=>{
       res.status(400).json({ error: e})
     } )
 })
-router.get('/myPics', requireLoggedIn, (req,res)=>{
+router.get('/my-pics', requireLoggedIn, (req,res)=>{
   linkData.getUserLinks( req.user )
     .then((posts) => {
       res.json({ posts }) 
     })
     .catch( ()=>res.redirect('/error'))
+})
+router.get('/vote/:postId', (req,res)=>{
+  console.log('voting')
+})
+router.get('/posts-by/:twitterId',(req,res)=>{
+  console.log('getting posts by')
 })
 
 module.exports = router;

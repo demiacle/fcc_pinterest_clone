@@ -7,7 +7,7 @@ import Masonry from 'react-masonry-component'
 
 var masonryOptions = {
   transitionDuration: 600,
-  columnWidth: 200,
+  columnWidth: 240,
   gutter: 10,
   fitWidth: true
 }
@@ -32,7 +32,7 @@ class App extends Component {
   // Check if user is logged in
   componentDidMount() {
     console.log('checking if user is logged in')
-    fetch('/userData', {credentials: 'include'})
+    fetch('/user-data', {credentials: 'include'})
       .then(res => res.json() )
       .then( res => this.setState( { 
         isLoggedIn: res.isLoggedIn,
@@ -48,7 +48,7 @@ class App extends Component {
   }
   viewUserPosts(e){
     e.preventDefault();
-    fetch('/myPics', {credentials: 'include'})
+    fetch('/my-pics', {credentials: 'include'})
       .then(res=>res.json())
       .then(res=>{
         console.log(res)

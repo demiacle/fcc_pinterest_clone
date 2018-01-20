@@ -14,7 +14,7 @@ class UploadForm extends Component {
     if( this.state.linkValue === '' || this.state.captionValue === '' ){
       return;
     }
-    fetch('/createLink', {
+    fetch('/create-link', {
       credentials: 'include',
       headers: {
         'Accept': 'application/json',
