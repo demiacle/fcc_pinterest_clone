@@ -4,7 +4,8 @@ var mongoose = require('mongoose')
 
 var userSchema = new mongoose.Schema({
   twitterId: String,
-  userName: String
+  userName: String,
+  profileUrl: String
 })
 userSchema.statics.findOneOrCreate = function findOneOrCreate( condition, callback){
   var self = this;
@@ -30,7 +31,14 @@ passport.use(new TwitterStrategy({
 },
   function (token, tokenSecret, profile, cb) {
     userModel.findOneOrCreate({ twitterId: profile.id, userName: profile.username }, function (err, user) {
-      return cb(err, user);
+      if( user.profileUrl === profile._json.profile_image_url ){
+        return cb(err,user)
+      } else {
+        user.profileUrl = profile._json.profile_image_url
+        user.save((err, updatedUser)=>{
+          return cb(err, updatedUser)
+        })
+      }
     });
   }
 ));

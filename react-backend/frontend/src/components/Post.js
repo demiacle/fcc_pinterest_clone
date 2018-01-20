@@ -15,9 +15,9 @@ class Post extends Component {
       <div className="postHeader">
         <a href={ "/postsBy/" + i.user }>
         <div className="userPortrait">
-          <img src={"https://twitter.com/" + i.user + "/profile_image?size=normal"} alt="user portrait" />
+          <img src={i.user.profileUrl} alt="user portrait" />
         </div>
-        <p className="userName">{i.user}</p>
+        <p className="userName">{i.user.userName}</p>
         </a>
         <a href={"/vote/" + i._id }>
         <span className="likes"><img src="three-arrow.png" alt="vote"/>{i.thumbsUp}</span>

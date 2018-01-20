@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
 var http = require('http')
 
 var postSchema = new mongoose.Schema({
-  user: String,
+  user: {type: mongoose.Schema.Types.ObjectId, ref: 'user'},
   link: String,
   caption: String,
   thumbsUp: [ String ],
@@ -19,7 +19,7 @@ exports.addLink = (url, user, caption) => {
       url = prefix + url;
     }
     var post = new postModel({
-      user: user.userName,
+      user: user._id,
       link: url,
       caption: caption,
       dateEpoch: (new Date).getTime()
@@ -35,7 +35,7 @@ exports.addLink = (url, user, caption) => {
 }
 exports.getUserLinks = (user) => {
   return new Promise((resolve, reject) => {
-    postModel.find({ user: user.userName }).lean().exec( (err, posts)=>{
+    postModel.find({ userName: user._id }).populate('user').lean().exec( (err, posts)=>{
       for( var i = 0; i < posts.length; i++ ) {
         posts[i].thumbsUp = posts[i].thumbsUp.length;
       }
@@ -48,7 +48,7 @@ exports.getUserLinks = (user) => {
 }
 exports.getAllLinks = () => {
   return new Promise((resolve, reject) => {
-    postModel.find({}).lean().exec((err, posts)=>{
+    postModel.find({}).populate('user').lean().exec((err, posts)=>{
       for( var i = 0; i < posts.length; i++ ) {
         posts[i].thumbsUp = posts[i].thumbsUp.length;
       }
