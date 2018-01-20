@@ -23,9 +23,10 @@
 .grid-item--width2 { width: 160px; }
 .grid-item--height2 { height: 140px; }
 
-.userPortrait {
+.user-portrait {
   width: 40px;
   display:inline-block;
+  padding-top:2px;
 }
 .userPortrait img {
     border-radius: 4px;
@@ -52,8 +53,8 @@
     vertical-align: top;
     margin-top: 8px;
 }
-.userName:hover {
-    background-color: red;
+.portrait-name-container:hover {
+    background-color: #c1e9e5;
 }
 .caption {
     padding: 8px;
@@ -61,8 +62,11 @@
 }
 .postHeader {
     border-bottom: 1px solid #bedad7;
+    padding-bottom: 4px;
 }
 .portrait-name-container {
     width: 80%;
     display: inline-block;
+    height: 44px;
+    border-radius: 6px;
 }
