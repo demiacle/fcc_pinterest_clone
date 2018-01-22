@@ -1,14 +1,6 @@
 var mongoose = require('mongoose')
 var http = require('http')
-
-var postSchema = new mongoose.Schema({
-  user: {type: mongoose.Schema.Types.ObjectId, ref: 'user'},
-  link: String,
-  caption: String,
-  thumbsUp: [ String ],
-  dateEpoch: Number 
-})
-var postModel = mongoose.model('post', postSchema )
+var postModel = require('./models.js').postModel
 
 exports.addLink = (url, user, caption) => {
   return new Promise((resolve, reject) => {
