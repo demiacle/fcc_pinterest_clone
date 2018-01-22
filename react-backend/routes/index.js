@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 require('../server/twitterAuth.js')
-var linkData = require('../server/linkData.js')
+var postData = require('../server/postData.js')
 var poll = require('../server/poll.js')
 var passport = require('passport')
 
@@ -31,7 +31,7 @@ router.get('/twitterCallback', (req, res, next) => {
 )
 router.get('/user-data', async (req, res) => {
   var isLoggedIn = req.user ? true : false;
-  var posts = await linkData.getAllLinks( req.user && req.user._id );
+  var posts = await postData.getAllPosts( req.user && req.user._id );
   res.json({ isLoggedIn, posts });
 })
 router.get('/logout', (req, res) => {
@@ -44,14 +44,14 @@ router.get('/error', (req, res) => {
 
 // Login required routes
 router.post('/create-link', requireLoggedIn, (req, res) => {
-  linkData.addLink(req.body.link, req.user, req.body.caption)
+  postData.addPost(req.body.link, req.user, req.body.caption)
     .then((post) => res.json({ post }))
     .catch((e) => {
       res.status(400).json({ error: e })
     })
 })
 router.get('/my-pics', requireLoggedIn, (req, res) => {
-  linkData.getUserLinks(req.user._id)
+  postData.getPostsByMongooseId(req.user._id)
     .then((posts) => {
       res.json({ posts })
     })
@@ -62,8 +62,7 @@ router.get('/vote/:postId', requireLoggedIn, async (req, res) => {
   res.json(status)
 })
 router.get('/posts-by/:twitterId', (req, res) => {
-  // TODO getuserlinks uses mongoose _id atm... need to add twitter id
-  linkData.getUserLinks(req.params.twitterId)
+  postData.getPostsByTwitterId(req.params.twitterId)
     .then((post) => {
       res.json({ posts })
     })

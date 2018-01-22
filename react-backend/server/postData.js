@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
 var http = require('http')
 var postModel = require('./models.js').postModel
 
-exports.addLink = (url, user, caption) => {
+exports.addPost = (url, user, caption) => {
   return new Promise((resolve, reject) => {
     url = encodeURI(url)
     url = url.replace('https', 'http')
@@ -25,10 +25,10 @@ exports.addLink = (url, user, caption) => {
     })
   })
 }
-exports.getLinksByTwitterId = ( twitterId, currentUser ) => {
+exports.getPostsByTwitterId = ( twitterId, currentUser ) => {
 
 }
-exports.getUserLinks = (currentUser) => {
+exports.getPostsByMongooseId = (currentUser) => {
   return new Promise((resolve, reject) => {
     postModel.find({ userName: currentUser._id }).populate('user').lean().exec( (err, posts)=>{
       // Check if user voted and convert array of voters to a number
@@ -45,12 +45,12 @@ exports.getUserLinks = (currentUser) => {
     })
   })
 }
-exports.getAllLinks = (currentUser) => {
+exports.getAllPosts = (currentUserMongooseId) => {
   return new Promise((resolve, reject) => {
     postModel.find({}).populate('user').lean().exec((err, posts)=>{
       // Check if user voted and convert array of voters to a number
       for( var i = 0; i < posts.length; i++ ) {
-        if( posts[i].thumbsUp.includes( currentUser ) ){
+        if( posts[i].thumbsUp.includes( currentUserMongooseId ) ){
           posts[i].hasUserVoted = true;
         } else {
           posts[i].hasUserVoted = false;
