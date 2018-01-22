@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import './Post.css';
 
 class Post extends Component {
+  constructor(props){
+    super(props)
+    this.toggleVote = this.toggleVote.bind(this)
+
+  }
   //TODO fetch vote
 
   //TODO fetch posts by user
@@ -11,6 +16,15 @@ class Post extends Component {
   setDefaultImage(e){
     e.target.src = "broken-link.png"
   }
+
+  toggleVote(e){
+    e.preventDefault()
+    this.props.toggleVoteStatus()
+    fetch('/vote/'+ this.props.postData._id, {credentials: 'include'})
+      .then(res => res.json() )
+      .then( res => this.setState( { 
+      } ) )
+  }  
 
   render() {
     var i = this.props.postData
@@ -27,7 +41,7 @@ class Post extends Component {
             <p className="userName">{i.user.userName}</p>
           </div>
         </a>
-        <a href={"/vote/" + i._id}>
+        <a href="vote" onClick={this.toggleVote}>
           <span className="likes"><img src="three-arrow.png" alt="vote" />{i.thumbsUp}</span>
         </a>
       </div>

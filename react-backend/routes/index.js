@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 require('../server/twitterAuth.js')
 var linkData = require('../server/linkData.js')
+var poll = require('../server/poll.js')
 var passport = require('passport')
 
 function requireLoggedIn(req,res,next){
@@ -45,11 +46,15 @@ router.get('/my-pics', requireLoggedIn, (req,res)=>{
     })
     .catch( ()=>res.redirect('/error'))
 })
-router.get('/vote/:postId', (req,res)=>{
-  console.log('voting')
+router.get('/vote/:postId', requireLoggedIn, (req,res)=>{
+  poll.toggleVote( req.params.postId, req.user );
 })
 router.get('/posts-by/:twitterId',(req,res)=>{
-  console.log('getting posts by')
+  linkData.getUserLinks( req.params.twitterId )
+    .then((post)=>{
+      res.json({posts})
+    })
+    .catch( ()=>res.redirect('/error'))
 })
 
 module.exports = router;

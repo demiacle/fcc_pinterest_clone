@@ -24,9 +24,16 @@ class App extends Component {
       isLoggedIn: false,
       showUploadingForm: false,
       isShowingUserPosts: false,
+      hasVotedForPosts: [],
       userPosts: [],
       allPosts: []
     }
+  }
+
+  toggleVoteStatus(){
+    console.log('toggle')
+    // if has voted for then revoke
+    // other add vote
   }
 
   // Check if user is logged in
@@ -73,7 +80,7 @@ class App extends Component {
     console.log( this.state.allPosts )
     var elements = this.state.isShowingUserPosts ? this.state.userPosts : this.state.allPosts;
     var childElements = elements.map((i, index)=> {
-      return <Post postData={i} key={index}/>
+      return <Post postData={i} key={index} toggleVoteStatus={this.toggleVoteStatus}/>
     });
     return childElements;
   }
