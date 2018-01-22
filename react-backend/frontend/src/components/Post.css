@@ -28,25 +28,30 @@
   display:inline-block;
   padding-top:2px;
 }
-.userPortrait img {
+.user-portrait img {
     border-radius: 4px;
 }
-.likes {
+
+.vote-button {
     float: right;
-    padding: 8px;
     border: 1px solid #c4e4e1;
     border-radius: 10px;
     margin-top: 4px;
+    padding: 10px;
+    background-color: white;
 }
-.likes:hover {
+.vote-button:hover {
     background-color: #c1e9e5;
 }
-.likes img {
+.vote-button img {
     height: 16px;
     width: 16px;
     vertical-align: text-top;
 }
-.userName {
+.vote-button:disabled {
+    border-color: #ddd;
+}
+.user-name {
     display: inline-block;
     padding: 6px;
     font-size: 10pt;
@@ -65,8 +70,9 @@
     padding-bottom: 4px;
 }
 .portrait-name-container {
-    width: 80%;
+    width: 78%;
     display: inline-block;
     height: 44px;
     border-radius: 6px;
+    cursor: pointer;
 }

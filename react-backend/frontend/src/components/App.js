@@ -47,6 +47,7 @@ class App extends Component {
       .catch(err=>alert('You encountered an error while logging out.'))
   }
   viewUserPosts(e){
+    // use this for profile clicks too
     e.preventDefault();
     fetch('/my-pics', {credentials: 'include'})
       .then(res=>res.json())
@@ -73,7 +74,7 @@ class App extends Component {
     console.log( this.state.allPosts )
     var elements = this.state.isShowingUserPosts ? this.state.userPosts : this.state.allPosts;
     var childElements = elements.map((i, index)=> {
-      return <Post postData={i} key={index} toggleVoteStatus={this.toggleVoteStatus}/>
+      return <Post postData={i} key={index} isLoggedIn={this.state.isLoggedIn}/>
     });
     return childElements;
   }
