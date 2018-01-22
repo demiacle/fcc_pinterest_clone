@@ -31,7 +31,7 @@ router.get('/twitterCallback', (req, res, next) => {
 )
 router.get('/user-data', async (req, res) => {
   var isLoggedIn = req.user ? true : false;
-  var posts = await linkData.getAllLinks();
+  var posts = await linkData.getAllLinks( req.user && req.user._id );
   res.json({ isLoggedIn, posts });
 })
 router.get('/logout', (req, res) => {
@@ -41,6 +41,8 @@ router.get('/logout', (req, res) => {
 router.get('/error', (req, res) => {
   res.send('You have encountered a perplexing error');
 })
+
+// Login required routes
 router.post('/create-link', requireLoggedIn, (req, res) => {
   linkData.addLink(req.body.link, req.user, req.body.caption)
     .then((post) => res.json({ post }))
@@ -60,6 +62,7 @@ router.get('/vote/:postId', requireLoggedIn, async (req, res) => {
   res.json(status)
 })
 router.get('/posts-by/:twitterId', (req, res) => {
+  // TODO getuserlinks uses mongoose _id atm... need to add twitter id
   linkData.getUserLinks(req.params.twitterId)
     .then((post) => {
       res.json({ posts })

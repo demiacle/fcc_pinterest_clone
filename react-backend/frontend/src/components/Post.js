@@ -10,22 +10,27 @@ class Post extends Component {
     console.log('post props are')
     console.log(props)
     this.state = {
-      hasUserVoted: false,
+      hasUserVoted: props.postData.hasUserVoted,
       votes: props.postData.thumbsUp
     }
   }
 
-  //TODO fetch vote
-
-  //TODO fetch posts by user
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isLoggedIn === false) {
+      this.setState({ hasUserVoted: false })
+    }
+  }
   setDefaultPortrait(e) {
     e.target.src = "http://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png"
   }
   setDefaultImage(e) {
     e.target.src = "broken-link.png"
   }
-
   toggleVote(e) {
+    if (this.props.isLoggedIn === false) {
+      alert('You must be logged in to vote')
+      return;
+    }
     this.setState((prev) => {
       console.log(prev)
       return {
@@ -34,10 +39,9 @@ class Post extends Component {
       }
     })
     fetch('/vote/' + this.props.postData._id, { credentials: 'include' })
-      .catch (err=> alert('An error occured please refresh'))
+      .catch(err => alert('An error occured please refresh'))
   }
-
-  showUserLinks(e) {
+  showUserLinks() {
 
   }
 
@@ -54,9 +58,9 @@ class Post extends Component {
           </div>
           <p className="user-name">{i.user.userName}</p>
         </div>
-        <button className="vote-button" onClick={this.toggleVote} disabled={!this.props.isLoggedIn} data-tip="Log in in to vote">
+        <button className="vote-button" onClick={this.toggleVote} data-tip="Log in in to vote">
           {!this.props.isLoggedIn && <ReactTooltip place="top" type="info" effect="solid" />}
-          <span className="vote"><img src="three-arrow.png" alt="vote" />{this.state.votes}</span>
+          <span className="vote"><img src={this.state.hasUserVoted ? "three-arrow-voted.png" : "three-arrow.png"} alt="vote" />{this.state.votes}</span>
         </button>
       </div>
       <p className="caption">{i.caption}</p>

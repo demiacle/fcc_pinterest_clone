@@ -25,23 +25,36 @@ exports.addLink = (url, user, caption) => {
     })
   })
 }
-exports.getUserLinks = (user) => {
+exports.getLinksByTwitterId = ( twitterId, currentUser ) => {
+
+}
+exports.getUserLinks = (currentUser) => {
   return new Promise((resolve, reject) => {
-    postModel.find({ userName: user._id }).populate('user').lean().exec( (err, posts)=>{
+    postModel.find({ userName: currentUser._id }).populate('user').lean().exec( (err, posts)=>{
+      // Check if user voted and convert array of voters to a number
       for( var i = 0; i < posts.length; i++ ) {
+        if( posts[i].thumbsUp.includes( currentUser ) ){
+          posts[i].hasUserVoted = true;
+        } else {
+          posts[i].hasUserVoted = false;
+        }
         posts[i].thumbsUp = posts[i].thumbsUp.length;
       }
-      console.log( posts)
       posts.sort((a,b)=>b.dateEpoch - a.dateEpoch)
-      console.log( posts)
       resolve( posts );
     })
   })
 }
-exports.getAllLinks = () => {
+exports.getAllLinks = (currentUser) => {
   return new Promise((resolve, reject) => {
     postModel.find({}).populate('user').lean().exec((err, posts)=>{
+      // Check if user voted and convert array of voters to a number
       for( var i = 0; i < posts.length; i++ ) {
+        if( posts[i].thumbsUp.includes( currentUser ) ){
+          posts[i].hasUserVoted = true;
+        } else {
+          posts[i].hasUserVoted = false;
+        }
         posts[i].thumbsUp = posts[i].thumbsUp.length;
       }
       posts.sort((a,b)=>b.dateEpoch - a.dateEpoch)

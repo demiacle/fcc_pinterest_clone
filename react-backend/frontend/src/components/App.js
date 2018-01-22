@@ -13,7 +13,7 @@ var masonryOptions = {
 }
 
 class App extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.test = this.test.bind(this)
     this.logout = this.logout.bind(this)
@@ -32,65 +32,78 @@ class App extends Component {
   // Check if user is logged in
   componentDidMount() {
     console.log('checking if user is logged in')
-    fetch('/user-data', {credentials: 'include'})
-      .then(res => res.json() )
-      .then( res => this.setState( { 
+    fetch('/user-data', { credentials: 'include' })
+      .then(res => res.json())
+      .then(res => this.setState({
         isLoggedIn: res.isLoggedIn,
         allPosts: res.posts
-      } ) )
+      }))
   }
   // Does not force reload for super speedy user experience
-  logout(e){
+  logout(e) {
     e.preventDefault();
-    this.setState({ isLoggedIn: false, showUploadingForm: false });
-    fetch('/logout', {credentials: 'include'})
-      .catch(err=>alert('You encountered an error while logging out.'))
+    this.setState(prev => {
+      function removeUserHasVoted( i ) {
+        i.hasUserVoted = false
+        return i 
+      }
+      var newAllPosts = prev.allPosts.map( removeUserHasVoted )
+      var newUserPosts = prev.userPosts.map( removeUserHasVoted )
+      return {
+        isLoggedIn: false,
+        showUploadingForm: false,
+        allPosts: newAllPosts,
+        userPosts: newUserPosts
+      }
+    });
+    fetch('/logout', { credentials: 'include' })
+      .catch(err => alert('You encountered an error while logging out.'))
   }
-  viewUserPosts(e){
+  viewUserPosts(e) {
     // use this for profile clicks too
     e.preventDefault();
-    fetch('/my-pics', {credentials: 'include'})
-      .then(res=>res.json())
-      .then(res=>{
+    fetch('/my-pics', { credentials: 'include' })
+      .then(res => res.json())
+      .then(res => {
         console.log(res)
-        if( res.error ){
-          alert( res.error )
+        if (res.error) {
+          alert(res.error)
         } else {
-          this.setState({userPosts:res.posts, isShowingUserPosts: true})
+          this.setState({ userPosts: res.posts, isShowingUserPosts: true })
           this.forceUpdate()
         }
       })
   }
-  showUploadForm(e){
+  showUploadForm(e) {
     this.setState({ showUploadingForm: true });
     e.preventDefault();
   }
-  test(e){
+  test(e) {
     e.preventDefault();
     console.log(this.state)
   }
-  renderWall(){
+  renderWall() {
     console.log('all posts')
-    console.log( this.state.allPosts )
+    console.log(this.state.allPosts)
     var elements = this.state.isShowingUserPosts ? this.state.userPosts : this.state.allPosts;
-    var childElements = elements.map((i, index)=> {
-      return <Post postData={i} key={index} isLoggedIn={this.state.isLoggedIn}/>
+    var childElements = elements.map((i, index) => {
+      return <Post postData={i} key={index} isLoggedIn={this.state.isLoggedIn} onLogout={ref => (this.child = ref)} />
     });
     return childElements;
   }
-  addPost(post){
-    this.setState(prev=>{
-        var allPosts = prev.allPosts.slice()
-        allPosts.unshift(post)
-        var userPosts = prev.userPosts.slice();
-        userPosts.unshift(post)
+  addPost(post) {
+    this.setState(prev => {
+      var allPosts = prev.allPosts.slice()
+      allPosts.unshift(post)
+      var userPosts = prev.userPosts.slice();
+      userPosts.unshift(post)
       return {
         allPosts,
         userPosts
       }
     })
     this.forceUpdate()
-    setTimeout(()=>{console.log(this.state)}, 2000)
+    setTimeout(() => { console.log(this.state) }, 2000)
     // TODO THIS IS NOT TRIGGERING A RENDER
   }
 
@@ -99,28 +112,28 @@ class App extends Component {
     return (
       <div className="App">
 
-      <NavBar 
-        test={this.test}
-        isLoggedIn={this.state.isLoggedIn}
-        logout={this.logout}
-        showUploadForm={this.showUploadForm}
-        viewUserPosts={this.viewUserPosts}
-      />
+        <NavBar
+          test={this.test}
+          isLoggedIn={this.state.isLoggedIn}
+          logout={this.logout}
+          showUploadForm={this.showUploadForm}
+          viewUserPosts={this.viewUserPosts}
+        />
 
         <header className="App-header">
           <h1 className="App-title">
             <div className='spin'></div>
             PICPAC
             <div className='spin'></div>
-            { this.state.showUploadingForm && <UploadForm addPost={this.addPost}/> }
+            {this.state.showUploadingForm && <UploadForm addPost={this.addPost} />}
           </h1>
         </header>
 
         <div id="theWall">
-        <p id="builtBy">Built by <a>Daniel Escobedo</a>:<a href="https://twitter.com/Demiacle">@Demiacle</a> using React, Express and masonry.js</p>
-        <Masonry elementType={'ul'} options={masonryOptions} >
-          {this.renderWall()}
-        </Masonry>
+          <p id="builtBy">Built by <a>Daniel Escobedo</a>:<a href="https://twitter.com/Demiacle">@Demiacle</a> using React, Express and masonry.js</p>
+          <Masonry elementType={'ul'} options={masonryOptions} >
+            {this.renderWall()}
+          </Masonry>
         </div>
 
       </div>
