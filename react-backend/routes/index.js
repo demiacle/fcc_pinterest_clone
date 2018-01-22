@@ -40,14 +40,15 @@ router.post('/create-link', requireLoggedIn, (req,res)=>{
     } )
 })
 router.get('/my-pics', requireLoggedIn, (req,res)=>{
-  linkData.getUserLinks( req.user )
+  linkData.getUserLinks( req.user._id )
     .then((posts) => {
       res.json({ posts }) 
     })
     .catch( ()=>res.redirect('/error'))
 })
-router.get('/vote/:postId', requireLoggedIn, (req,res)=>{
-  poll.toggleVote( req.params.postId, req.user );
+router.get('/vote/:postId', requireLoggedIn, async (req,res)=>{
+  var status = await poll.toggleVote( req.params.postId, req.user._id );
+  res.json( status )
 })
 router.get('/posts-by/:twitterId',(req,res)=>{
   linkData.getUserLinks( req.params.twitterId )

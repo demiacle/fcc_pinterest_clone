@@ -5,8 +5,11 @@ class Post extends Component {
   constructor(props){
     super(props)
     this.toggleVote = this.toggleVote.bind(this)
-
+    this.state = {
+      hasUserVoted: false
+    }
   }
+
   //TODO fetch vote
 
   //TODO fetch posts by user

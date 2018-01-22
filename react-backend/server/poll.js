@@ -1,22 +1,32 @@
 var mongoose = require('mongoose')
+var postModel = require('./models.js').postModel
 
+var errorMsg = { error: 'Voting failed' }
 
-function toggleVote( postId, userId ){
-  console.log('voting')
+function toggleVote(postId, userId) {
+  return new Promise((resolve, reject) => {
+    postModel.findOne({ _id: postId }, (err, post) => {
+      if( err ){
+        resolve( errorMsg )
+      }
 
-  // check if vote already cast
-  // if not cast vote
-  // if already cast then withdraw vote
-}
+      if (post.thumbsUp.includes(userId)) {
+        post.thumbsUp.splice(post.thumbsUp.indexOf(userId), 1)
+      } else {
+        post.thumbsUp.push(userId)
+      }
 
-function castVote(){
-
-}
-
-function withdrawVote(){
-
+      post.save(err => {
+        if (err) {
+          resolve( errorMsg )
+        } else {
+          resolve({ success: true })
+        }
+      })
+    })
+  })
 }
 
 module.exports = {
-    toggleVote
+  toggleVote
 }

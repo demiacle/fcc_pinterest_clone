@@ -24,16 +24,9 @@ class App extends Component {
       isLoggedIn: false,
       showUploadingForm: false,
       isShowingUserPosts: false,
-      hasVotedForPosts: [],
       userPosts: [],
       allPosts: []
     }
-  }
-
-  toggleVoteStatus(){
-    console.log('toggle')
-    // if has voted for then revoke
-    // other add vote
   }
 
   // Check if user is logged in
