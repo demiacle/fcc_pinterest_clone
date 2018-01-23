@@ -44,3 +44,11 @@ form div {
   margin-left: 6px;
   cursor: pointer;
 }
+@media (max-width: 440px) { 
+  form label {
+    display: none;
+  }
+  #submit {
+    width: 300px;
+  }
+}

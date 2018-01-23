@@ -1,7 +1,6 @@
 .App {
 }
 body{
-  min-width: 440px;
   overflow-x: hidden;
   margin: 0;
   padding: 0;
@@ -13,11 +12,6 @@ a {
 }
 button {
   cursor: pointer;
-}
-@media (max-width: 440px) { 
-  body{
-    overflow-x: visible;
-  }
 }
 .spin {
   display: inline-block;
@@ -47,7 +41,6 @@ button {
 }
 #theWall {
   max-width: 1320px;
-  min-width: 440px;
   margin: auto;
   margin-top: 14px;
   overflow: hidden;
@@ -64,4 +57,11 @@ button {
 }
 #builtBy a {
   font-weight: bold;
+}
+@media (max-width: 440px) { 
+  body{
+    overflow-x: visible;
+    width: 100%;
+    min-width: 300px;
+  }
 }

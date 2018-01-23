@@ -49,11 +49,11 @@ class UploadForm extends Component {
       <form action="javascript:void(0)" id="uploadForm">
         <div>
         <label htmlFor="link">link:</label>
-          <input type="text" id="link" value={this.state.linkValue} onChange={this.updateLinkInput} ref={this.focusInput} required/>
+          <input type="text" id="link" value={this.state.linkValue} onChange={this.updateLinkInput} ref={this.focusInput} placeholder="http://path.to.link" required/>
           </div>
           <div>
         <label htmlFor="caption">caption:</label>
-          <input type="text" id="caption" value={this.state.captionValue} onChange={this.updateCaptionInput} ref={this.focusInput} required/>
+          <input type="text" id="caption" value={this.state.captionValue} onChange={this.updateCaptionInput} ref={this.focusInput} placeholder="Caption" required/>
         </div>
         <button id="submit" onClick={this.submitLinks}>submit</button>
       </form>
