@@ -42,6 +42,9 @@ button {
 .App-intro {
   font-size: large;
 }
+.error{
+  text-align: center;
+}
 #theWall {
   max-width: 1000px;
   min-width: 580px;

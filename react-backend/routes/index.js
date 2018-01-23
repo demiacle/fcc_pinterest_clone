@@ -31,8 +31,15 @@ router.get('/twitterCallback', (req, res, next) => {
 )
 router.get('/user-data', async (req, res) => {
   var isLoggedIn = req.user ? true : false;
+  var userName = req.user ? req.user.userName : '';
   var posts = await postData.getAllPosts( req.user && req.user._id );
-  res.json({ isLoggedIn, posts });
+  res.json({ isLoggedIn, userName, posts });
+})
+router.get('/posts-by/:twitterUserName', async (req, res) => {
+  var isLoggedIn = req.user ? true : false;
+  var userName = req.user ? req.user.userName : '';
+  var posts = await postData.getPostsByTwitterUserName(req.params.twitterUserName, req.user && req.user._id )
+  res.json({ isLoggedIn, userName, posts });
 })
 router.get('/logout', (req, res) => {
   req.logout();
@@ -50,6 +57,7 @@ router.post('/create-link', requireLoggedIn, (req, res) => {
       res.status(400).json({ error: e })
     })
 })
+// Deprecated my-pics
 router.get('/my-pics', requireLoggedIn, (req, res) => {
   postData.getPostsByMongooseId(req.user._id)
     .then((posts) => {
@@ -60,13 +68,6 @@ router.get('/my-pics', requireLoggedIn, (req, res) => {
 router.get('/vote/:postId', requireLoggedIn, async (req, res) => {
   var status = await poll.toggleVote(req.params.postId, req.user._id);
   res.json(status)
-})
-router.get('/posts-by/:twitterId', (req, res) => {
-  postData.getPostsByTwitterId(req.params.twitterId)
-    .then((post) => {
-      res.json({ posts })
-    })
-    .catch(() => res.redirect('/error'))
 })
 
 module.exports = router;

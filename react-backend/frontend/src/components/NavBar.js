@@ -23,7 +23,7 @@ class NavBar extends Component {
           </li>
           { this.props.isLoggedIn &&
           <li>
-            <a href="my-posts" onClick={(e)=>this.props.viewUserPosts(e)}>
+            <a href={ "/posts-by/" + this.props.userName }>
               <div>
                 My pics
               </div>

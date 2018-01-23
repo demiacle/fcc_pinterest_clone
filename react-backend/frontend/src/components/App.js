@@ -4,6 +4,7 @@ import NavBar from './NavBar';
 import Post from './Post';
 import UploadForm from './UploadForm';
 import Masonry from 'react-masonry-component'
+import { Redirect } from 'react-router'
 
 var masonryOptions = {
   transitionDuration: 600,
@@ -23,24 +24,27 @@ class App extends Component {
     this.state = {
       isLoggedIn: false,
       showUploadingForm: false,
-      isShowingUserPosts: false,
-      userPosts: [],
       allPosts: []
     }
   }
 
-  // Check if user is logged in
+  // Handles initializing between two separate routes
   componentDidMount() {
     console.log('checking if user is logged in')
-    fetch('/user-data', { credentials: 'include' })
+    var route = '/user-data'
+    if ( this.props.match.params.user ){
+      route = '/posts-by/' + this.props.match.params.user
+    }
+    fetch( route, { credentials: 'include' })
       .then(res => res.json())
       .then(res => this.setState({
         isLoggedIn: res.isLoggedIn,
-        allPosts: res.posts
+        userName: res.userName,
+        allPosts: res.posts ? res.posts : []
       }))
   }
-  // Does not force reload for super speedy user experience
   logout(e) {
+    // Does not force reload for super speedy user experience
     e.preventDefault();
     this.setState(prev => {
       function removeUserHasVoted( i ) {
@@ -48,28 +52,27 @@ class App extends Component {
         return i 
       }
       var newAllPosts = prev.allPosts.map( removeUserHasVoted )
-      var newUserPosts = prev.userPosts.map( removeUserHasVoted )
       return {
         isLoggedIn: false,
         showUploadingForm: false,
         allPosts: newAllPosts,
-        userPosts: newUserPosts
       }
     });
     fetch('/logout', { credentials: 'include' })
       .catch(err => alert('You encountered an error while logging out.'))
   }
   viewUserPosts(e) {
+    // DEPRECATED - REMOVE
     // use this for profile clicks too
     e.preventDefault();
-    fetch('/my-pics', { credentials: 'include' })
+    fetch('/posts-by', { credentials: 'include' })
       .then(res => res.json())
       .then(res => {
         console.log(res)
         if (res.error) {
           alert(res.error)
         } else {
-          this.setState({ userPosts: res.posts, isShowingUserPosts: true })
+          this.setState({ allPosts: res.posts })
           this.forceUpdate()
         }
       })
@@ -85,26 +88,25 @@ class App extends Component {
   renderWall() {
     console.log('all posts')
     console.log(this.state.allPosts)
-    var elements = this.state.isShowingUserPosts ? this.state.userPosts : this.state.allPosts;
+    var elements = this.state.allPosts;
     var childElements = elements.map((i, index) => {
-      return <Post postData={i} key={index} isLoggedIn={this.state.isLoggedIn} onLogout={ref => (this.child = ref)} />
+      return <Post postData={i} key={index} isLoggedIn={this.state.isLoggedIn} />
     });
     return childElements;
   }
   addPost(post) {
+    if( this.props.match.params.user ){
+      return <Redirect to ='/' push={true} />
+    }
     this.setState(prev => {
       var allPosts = prev.allPosts.slice()
       allPosts.unshift(post)
-      var userPosts = prev.userPosts.slice();
-      userPosts.unshift(post)
       return {
-        allPosts,
-        userPosts
+        allPosts
       }
     })
     this.forceUpdate()
     setTimeout(() => { console.log(this.state) }, 2000)
-    // TODO THIS IS NOT TRIGGERING A RENDER
   }
 
   render() {
@@ -117,7 +119,7 @@ class App extends Component {
           isLoggedIn={this.state.isLoggedIn}
           logout={this.logout}
           showUploadForm={this.showUploadForm}
-          viewUserPosts={this.viewUserPosts}
+          userName={this.state.userName}
         />
 
         <header className="App-header">
