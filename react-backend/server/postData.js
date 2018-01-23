@@ -12,6 +12,7 @@ exports.addPost = (url, user, caption) => {
     if (url.substr(0, prefix.length) !== prefix) {
       url = prefix + url;
     }
+    // TODO check url is picture here
     var post = new postModel({
       user: user._id,
       link: url,

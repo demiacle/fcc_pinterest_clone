@@ -58,6 +58,15 @@ class NavBar extends Component {
             </a>
           </li>
           }
+          { !this.props.isLoggedIn && 
+          <li className='right'>
+            <a href={ "http://" + window.location.hostname + ":3001/guest-login"}>
+              <div>
+                Guest login
+              </div>
+            </a>
+          </li>
+          }
         </ul>
       </nav>
     );

@@ -1,12 +1,13 @@
 var passport = require('passport')
 var TwitterStrategy = require('passport-twitter')
+var LocalStrategy = require('passport-local')
 var mongoose = require('mongoose')
 var userModel = require('./models.js').userModel
 
-passport.serializeUser(function(user, cb) {
+passport.serializeUser(function (user, cb) {
   cb(null, user);
 });
-passport.deserializeUser(function(obj, cb) {
+passport.deserializeUser(function (obj, cb) {
   cb(null, obj);
 });
 
@@ -17,22 +18,22 @@ passport.use(new TwitterStrategy({
 },
   function (token, tokenSecret, profile, cb) {
     userModel.findOneOrCreate({ twitterId: profile.id, userName: profile.username }, function (err, user) {
-      if( user.profileUrl === profile._json.profile_image_url ){
-        return cb(err,user)
-      } else {
+      // Update user profile link
+      if (user.profileUrl !== profile._json.profile_image_url) {
         user.profileUrl = profile._json.profile_image_url
-        user.save((err, updatedUser)=>{
-          return cb(err, updatedUser)
-        })
       }
+      user.save((err, updatedUser) => {
+        return cb(err, updatedUser)
+      })
     });
   }
 ));
 
-function test(){
-    userModel.findOneOrCreate({ twitterId: 't' }, function (err, user) {
-      console.log('user');
-    });
-}
-
-module.exports = test;
+passport.use(new LocalStrategy({ session: true }, function (user, password, done) {
+  userModel.findOneOrCreate({ twitterId: '@Guest', userName: '@Guest' }, function (err, user) {
+    if (err) {
+      return done(err)
+    }
+    done(null, user)
+  })
+}))

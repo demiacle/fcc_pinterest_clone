@@ -43,6 +43,10 @@ class Post extends Component {
   }
 
   deletePost() {
+    var shouldDelete = window.confirm( 'Really delete post?')
+    if( shouldDelete === false ){
+      return;
+    }
     fetch('/delete-post/' + this.props.postData._id, { credentials: 'include' })
       .catch(res => alert('An error occurred while delete, try again'))
     this.props.removeFromWall(this.props.postData._id)

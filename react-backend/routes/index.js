@@ -13,17 +13,26 @@ function requireLoggedIn(req, res, next) {
   }
 }
 
+router.get('/guest-login', (req,res,next)=>{
+  console.log('k')
+  req.get('Authorization')
+  req.body = {}
+  req.body.username = '$Guest'
+  req.body.password = '$Guest'
+  next()
+},passport.authenticate('local', {successRedirect: process.env.FRONTEND_URL}),
+(req,res)=>{console.log('got')})
 router.get('/login', (req, res, next) => {
   // Keep now for debugging purposes
   console.log(req.sessionID)
   next();
-  },
+},
   passport.authenticate('twitter'));
 router.get('/twitterCallback', (req, res, next) => {
   // Keep now for debugging purposes
   console.log(req.sessionID)
   next();
-  },
+},
   passport.authenticate('twitter', {
     failureRedirect: '/error',
     successRedirect: process.env.FRONTEND_URL
@@ -32,13 +41,13 @@ router.get('/twitterCallback', (req, res, next) => {
 router.get('/user-data', async (req, res) => {
   var isLoggedIn = req.user ? true : false;
   var userName = req.user ? req.user.userName : '';
-  var posts = await postData.getAllPosts( req.user && req.user._id );
+  var posts = await postData.getAllPosts(req.user && req.user._id);
   res.json({ isLoggedIn, userName, posts });
 })
 router.get('/posts-by/:twitterUserName', async (req, res) => {
   var isLoggedIn = req.user ? true : false;
   var userName = req.user ? req.user.userName : '';
-  var posts = await postData.getPostsByTwitterUserName(req.params.twitterUserName, req.user && req.user._id )
+  var posts = await postData.getPostsByTwitterUserName(req.params.twitterUserName, req.user && req.user._id)
   res.json({ isLoggedIn, userName, posts });
 })
 router.get('/logout', (req, res) => {
