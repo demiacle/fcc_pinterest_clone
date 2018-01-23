@@ -21,6 +21,7 @@ class App extends Component {
     this.showUploadForm = this.showUploadForm.bind(this)
     this.viewUserPosts = this.viewUserPosts.bind(this)
     this.addPost = this.addPost.bind(this)
+    this.removeFromWall = this.removeFromWall.bind(this)
     this.state = {
       isLoggedIn: false,
       showUploadingForm: false,
@@ -32,10 +33,10 @@ class App extends Component {
   componentDidMount() {
     console.log('checking if user is logged in')
     var route = '/user-data'
-    if ( this.props.match.params.user ){
+    if (this.props.match.params.user) {
       route = '/posts-by/' + this.props.match.params.user
     }
-    fetch( route, { credentials: 'include' })
+    fetch(route, { credentials: 'include' })
       .then(res => res.json())
       .then(res => this.setState({
         isLoggedIn: res.isLoggedIn,
@@ -47,11 +48,11 @@ class App extends Component {
     // Does not force reload for super speedy user experience
     e.preventDefault();
     this.setState(prev => {
-      function removeUserHasVoted( i ) {
+      function removeUserHasVoted(i) {
         i.hasUserVoted = false
-        return i 
+        return i
       }
-      var newAllPosts = prev.allPosts.map( removeUserHasVoted )
+      var newAllPosts = prev.allPosts.map(removeUserHasVoted)
       return {
         isLoggedIn: false,
         showUploadingForm: false,
@@ -77,6 +78,18 @@ class App extends Component {
         }
       })
   }
+  removeFromWall(postId) {
+    this.setState(prev => {
+      var newAllPosts = prev.allPosts
+      newAllPosts = newAllPosts.reduce((accumulator, i) => {
+        if (i._id !== postId) {
+          accumulator.push(i)
+        }
+        return accumulator
+      },[])
+      return { allPosts: newAllPosts }
+    })
+  }
   showUploadForm(e) {
     this.setState({ showUploadingForm: true });
     e.preventDefault();
@@ -90,13 +103,13 @@ class App extends Component {
     console.log(this.state.allPosts)
     var elements = this.state.allPosts;
     var childElements = elements.map((i, index) => {
-      return <Post postData={i} key={index} isLoggedIn={this.state.isLoggedIn} />
+      return <Post postData={i} key={index} isLoggedIn={this.state.isLoggedIn} removeFromWall={this.removeFromWall} currentUser={this.state.userName} />
     });
     return childElements;
   }
   addPost(post) {
-    if( this.props.match.params.user ){
-      return <Redirect to ='/' push={true} />
+    if (this.props.match.params.user) {
+      return <Redirect to='/' push={true} />
     }
     this.setState(prev => {
       var allPosts = prev.allPosts.slice()

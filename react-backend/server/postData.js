@@ -45,6 +45,16 @@ exports.getPostsByMongooseId = (currentUser) => {
 exports.getAllPosts = (currentUser) => {
   return getPosts({}, currentUser)
 }
+exports.deletePost = ( postId, currentUserId )=> {
+  return new Promise( (resolve, reject)=>{
+    postModel.remove({ _id: postId, user: currentUserId}, (err, post)=>{
+      if(err)
+        console.log(err)
+
+      resolve( {success: true })
+    })
+  })
+}
 
 function getPosts(query, userId) {
   return new Promise((resolve, reject) => {

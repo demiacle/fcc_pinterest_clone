@@ -6,6 +6,7 @@ class Post extends Component {
   constructor(props) {
     super(props)
     this.toggleVote = this.toggleVote.bind(this)
+    this.deletePost = this.deletePost.bind(this)
     console.log('post props are')
     console.log(props)
     this.state = {
@@ -41,12 +42,21 @@ class Post extends Component {
       .catch(err => alert('An error occured please refresh'))
   }
 
+  deletePost() {
+    fetch('/delete-post/' + this.props.postData._id, { credentials: 'include' })
+      .catch(res => alert('An error occurred while delete, try again'))
+    this.props.removeFromWall(this.props.postData._id)
+  }
+
   render() {
     var i = this.props.postData
     return <li className="grid-item">
       <a href={i.link}>
         <img src={i.link} alt={i.caption} onError={this.setDefaultImage} />
       </a>
+      {i.user.userName === this.props.currentUser && <button className="delete" onClick={this.deletePost}>
+        x
+      </button>}
       <div className="postHeader">
         <a href={"/posts-by/" + i.user.userName} className="portrait-name-container">
           <div className="user-portrait">

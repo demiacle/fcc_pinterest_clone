@@ -76,3 +76,14 @@
     border-radius: 6px;
     cursor: pointer;
 }
+.delete {
+    color: #f77;
+    position: absolute;
+    z-index: 100;
+    left: 8px;
+    top: 8px;
+    background-color: white;
+    border-radius: 3px;
+    border: 1px solid #f77;
+    padding: 6px 10px;
+}

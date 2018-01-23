@@ -69,5 +69,9 @@ router.get('/vote/:postId', requireLoggedIn, async (req, res) => {
   var status = await poll.toggleVote(req.params.postId, req.user._id);
   res.json(status)
 })
+router.get('/delete-post/:postId', requireLoggedIn, async (req, res) => {
+  var status = await postData.deletePost(req.params.postId, req.user._id);
+  res.json(status)
+})
 
 module.exports = router;
