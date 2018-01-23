@@ -8,7 +8,7 @@ import { Redirect } from 'react-router'
 
 var masonryOptions = {
   transitionDuration: 600,
-  columnWidth: 240,
+  columnWidth: 320,
   gutter: 10,
   fitWidth: true
 }

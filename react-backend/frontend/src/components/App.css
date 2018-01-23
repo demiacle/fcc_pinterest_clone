@@ -46,8 +46,8 @@ button {
   text-align: center;
 }
 #theWall {
-  max-width: 1000px;
-  min-width: 580px;
+  max-width: 1320px;
+  min-width: 440px;
   margin: auto;
   margin-top: 14px;
   overflow: hidden;
