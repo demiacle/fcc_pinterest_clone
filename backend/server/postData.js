@@ -12,7 +12,6 @@ exports.addPost = (url, user, caption) => {
     if (url.substr(0, prefix.length) !== prefix) {
       url = prefix + url;
     }
-    // TODO check url is picture here
     var post = new postModel({
       user: user._id,
       link: url,
@@ -24,18 +23,26 @@ exports.addPost = (url, user, caption) => {
         console.log(err)
         throw 'An unexpected error happened'
       }
-      resolve(doc.toObject());
+      postModel.populate(doc, { path: 'user' }, (err, final) => {
+        if(err){
+          console.log(err)
+        }
+        doc = doc.toObject();
+        doc.thumbsUp = 0;
+        doc.hasUserVoted = false;
+        resolve(doc);
+      })
     })
   })
 }
 exports.getPostsByTwitterUserName = (twitterUserName, currentUser) => {
   return new Promise((resolve, reject) => {
-    userModel.find({ userName: { $regex: new RegExp( twitterUserName, 'i' ) } }, (err, user) => {
+    userModel.find({ userName: { $regex: new RegExp(twitterUserName, 'i') } }, (err, user) => {
       if (err)
         console.log(err)
-      resolve( user )
+      resolve(user)
     })
-  }).then( (user)=> getPosts({ user: user }, currentUser) )
+  }).then((user) => getPosts({ user: user }, currentUser))
 }
 exports.getPostsByTwitterId = (twitterId, currentUser) => {
   console.log('not implemented');
@@ -46,13 +53,13 @@ exports.getPostsByMongooseId = (currentUser) => {
 exports.getAllPosts = (currentUser) => {
   return getPosts({}, currentUser)
 }
-exports.deletePost = ( postId, currentUserId )=> {
-  return new Promise( (resolve, reject)=>{
-    postModel.remove({ _id: postId, user: currentUserId}, (err, post)=>{
-      if(err)
+exports.deletePost = (postId, currentUserId) => {
+  return new Promise((resolve, reject) => {
+    postModel.remove({ _id: postId, user: currentUserId }, (err, post) => {
+      if (err)
         console.log(err)
 
-      resolve( {success: true })
+      resolve({ success: true })
     })
   })
 }

@@ -4,6 +4,7 @@ require('../server/twitterAuth.js')
 var postData = require('../server/postData.js')
 var poll = require('../server/poll.js')
 var passport = require('passport')
+var request = require('request')
 
 function requireLoggedIn(req, res, next) {
   if (req.user) {
@@ -13,38 +14,53 @@ function requireLoggedIn(req, res, next) {
   }
 }
 
-router.get('/guest-login', (req,res,next)=>{
+// Routes accessible without authentication
+router.get('/guest-login', (req, res, next) => {
   console.log('k')
   req.get('Authorization')
   req.body = {}
   req.body.username = '$Guest'
   req.body.password = '$Guest'
   next()
-},passport.authenticate('local', {successRedirect: process.env.FRONTEND_URL}),
-(req,res)=>{console.log('got')})
+}, passport.authenticate('local', { successRedirect: '/' }),
+  (req, res) => { console.log('got') })
 router.get('/login', (req, res, next) => {
   // Keep now for debugging purposes
-  console.log(req.sessionID)
+  //console.log(req.sessionID)
   next();
 },
   passport.authenticate('twitter'));
 router.get('/twitterCallback', (req, res, next) => {
   // Keep now for debugging purposes
-  console.log(req.sessionID)
-  next();
-},
-  passport.authenticate('twitter', {
-    failureRedirect: '/error',
-    successRedirect: process.env.FRONTEND_URL
-  })
-)
+  //console.log(req.sessionID)
+  passport.authenticate('twitter', (err, user) => {
+    if(err){
+      console.log(err)
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        console.log(err)
+      }
+      return res.redirect('/')
+    })
+  })(req,res,next)
+})
 router.get('/user-data', async (req, res) => {
   var isLoggedIn = req.user ? true : false;
   var userName = req.user ? req.user.userName : '';
   var posts = await postData.getAllPosts(req.user && req.user._id);
   res.json({ isLoggedIn, userName, posts });
 })
-router.get('/posts-by/:twitterUserName', async (req, res) => {
+router.get([ '/', '/posts-by/:twitterUserName' ], (req, res) => {
+  request.get('https://fcc-pinterest-clone-demiacle.herokuapp.com/', (err,response,body)=>{
+    if(!err){
+      res.send(body)
+    } else {
+      console.log(err)
+    }
+  })
+})
+router.get('/api/posts-by/:twitterUserName', async (req, res) => {
   var isLoggedIn = req.user ? true : false;
   var userName = req.user ? req.user.userName : '';
   var posts = await postData.getPostsByTwitterUserName(req.params.twitterUserName, req.user && req.user._id)
@@ -82,5 +98,6 @@ router.get('/delete-post/:postId', requireLoggedIn, async (req, res) => {
   var status = await postData.deletePost(req.params.postId, req.user._id);
   res.json(status)
 })
+
 
 module.exports = router;

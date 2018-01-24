@@ -33,8 +33,13 @@ class App extends Component {
   componentDidMount() {
     console.log('checking if user is logged in')
     var route = '/user-data'
-    if (this.props.match.params.user) {
-      route = '/posts-by/' + this.props.match.params.user
+    console.log( window.location.href )
+    var splitLocation = window.location.href.split('/');
+    console.log( splitLocation)
+
+    if ( splitLocation.includes( 'posts-by' ) ) {
+      var position = splitLocation.indexOf('posts-by')
+      route = '/api/posts-by/' + splitLocation[ position + 1];
     }
     fetch(route, { credentials: 'include' })
       .then(res => res.json())
@@ -103,14 +108,11 @@ class App extends Component {
     console.log(this.state.allPosts)
     var elements = this.state.allPosts;
     var childElements = elements.map((i, index) => {
-      return <Post postData={i} key={index} isLoggedIn={this.state.isLoggedIn} removeFromWall={this.removeFromWall} currentUser={this.state.userName} />
+      return <Post postData={i} key={i._id} isLoggedIn={this.state.isLoggedIn} removeFromWall={this.removeFromWall} currentUser={this.state.userName} />
     });
     return childElements;
   }
   addPost(post) {
-    if (this.props.match.params.user) {
-      return <Redirect to='/' push={true} />
-    }
     this.setState(prev => {
       var allPosts = prev.allPosts.slice()
       allPosts.unshift(post)
@@ -118,7 +120,8 @@ class App extends Component {
         allPosts
       }
     })
-    this.forceUpdate()
+    window.location.replace("https://fcc-pinterest-clone-demiacle.herokuapp.com/")
+    this.forceUpdate();
     setTimeout(() => { console.log(this.state) }, 2000)
   }
 
@@ -131,6 +134,7 @@ class App extends Component {
           test={this.test}
           isLoggedIn={this.state.isLoggedIn}
           logout={this.logout}
+          login={this.login}
           showUploadForm={this.showUploadForm}
           userName={this.state.userName}
         />

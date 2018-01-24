@@ -58,7 +58,7 @@ class Post extends Component {
       <a href={i.link}>
         <img src={i.link} alt={i.caption} onError={this.setDefaultImage} />
       </a>
-      {i.user.userName === this.props.currentUser && <button className="delete" onClick={this.deletePost}>
+      {i.user.userName === this.props.currentUser && this.props.isLoggedIn  && <button className="delete" onClick={this.deletePost}>
         x
       </button>}
       <div className="postHeader">

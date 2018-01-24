@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import './NavBar.css';
+import { Link } from 'react-router-dom'
 
 class NavBar extends Component {
   render() {
@@ -51,16 +52,16 @@ class NavBar extends Component {
           </li>
           :
           <li>
-            <a href={ "http://" + window.location.hostname + ":3001/login"}>
+          <a href="/login">
               <div>
                 Login
               </div>
-            </a>
+          </a>
           </li>
           }
           { !this.props.isLoggedIn && 
           <li className='right'>
-            <a href={ "http://" + window.location.hostname + ":3001/guest-login"}>
+            <a href={ "/guest-login"}>
               <div>
                 Guest login
               </div>
