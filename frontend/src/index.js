@@ -8,5 +8,5 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 ReactDOM.render(<App />,
   document.getElementById('root'));
 //registerServiceWorker();
-
+// Service workers were interfering with twitter OAuth
 unregister();

@@ -18,7 +18,7 @@ passport.use(new TwitterStrategy({
 },
   function (token, tokenSecret, profile, cb) {
     userModel.findOneOrCreate({ twitterId: profile.id, userName: profile.username }, function (err, user) {
-      // Update user profile link
+      // Update user profile link on every login
       if (user.profileUrl !== profile._json.profile_image_url) {
         user.profileUrl = profile._json.profile_image_url
       }

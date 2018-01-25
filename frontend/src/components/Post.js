@@ -7,8 +7,8 @@ class Post extends Component {
     super(props)
     this.toggleVote = this.toggleVote.bind(this)
     this.deletePost = this.deletePost.bind(this)
-    console.log('post props are')
-    console.log(props)
+    //console.log('post props are')
+    //console.log(props)
     this.state = {
       hasUserVoted: props.postData.hasUserVoted,
       votes: props.postData.thumbsUp
@@ -21,6 +21,7 @@ class Post extends Component {
     }
   }
   setDefaultPortrait(e) {
+    // Twitters default profile pic
     e.target.src = "http://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png"
   }
   setDefaultImage(e) {
@@ -32,7 +33,7 @@ class Post extends Component {
       return;
     }
     this.setState((prev) => {
-      console.log(prev)
+      //console.log(prev)
       return {
         hasUserVoted: !prev.hasUserVoted,
         votes: prev.hasUserVoted ? prev.votes - 1 : prev.votes + 1

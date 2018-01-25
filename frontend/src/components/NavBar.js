@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import './NavBar.css';
-import { Link } from 'react-router-dom'
 
 class NavBar extends Component {
   render() {
@@ -15,15 +14,6 @@ class NavBar extends Component {
               </div>
             </a>
           </li>
-          { false &&
-          <li className="abs">
-            <a href="testFunction" onClick={(e)=>this.props.test(e)}>
-              <div>
-                test
-              </div>
-            </a>
-          </li>
-          }
           { this.props.isLoggedIn &&
           <li>
             <a href={ "/posts-by/" + this.props.userName }>

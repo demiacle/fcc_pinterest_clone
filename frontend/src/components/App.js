@@ -4,7 +4,6 @@ import NavBar from './NavBar';
 import Post from './Post';
 import UploadForm from './UploadForm';
 import Masonry from 'react-masonry-component'
-import { Redirect } from 'react-router'
 
 var masonryOptions = {
   transitionDuration: 600,
@@ -16,10 +15,8 @@ var masonryOptions = {
 class App extends Component {
   constructor(props) {
     super(props)
-    this.test = this.test.bind(this)
     this.logout = this.logout.bind(this)
     this.showUploadForm = this.showUploadForm.bind(this)
-    this.viewUserPosts = this.viewUserPosts.bind(this)
     this.addPost = this.addPost.bind(this)
     this.removeFromWall = this.removeFromWall.bind(this)
     this.state = {
@@ -31,12 +28,8 @@ class App extends Component {
 
   // Handles initializing between two separate routes
   componentDidMount() {
-    console.log('checking if user is logged in')
     var route = '/user-data'
-    console.log( window.location.href )
     var splitLocation = window.location.href.split('/');
-    console.log( splitLocation)
-
     if ( splitLocation.includes( 'posts-by' ) ) {
       var position = splitLocation.indexOf('posts-by')
       route = '/api/posts-by/' + splitLocation[ position + 1];
@@ -50,7 +43,7 @@ class App extends Component {
       }))
   }
   logout(e) {
-    // Does not force reload for super speedy user experience
+    // No need to force reload
     e.preventDefault();
     this.setState(prev => {
       function removeUserHasVoted(i) {
@@ -66,22 +59,6 @@ class App extends Component {
     });
     fetch('/logout', { credentials: 'include' })
       .catch(err => alert('You encountered an error while logging out.'))
-  }
-  viewUserPosts(e) {
-    // DEPRECATED - REMOVE
-    // use this for profile clicks too
-    e.preventDefault();
-    fetch('/posts-by', { credentials: 'include' })
-      .then(res => res.json())
-      .then(res => {
-        console.log(res)
-        if (res.error) {
-          alert(res.error)
-        } else {
-          this.setState({ allPosts: res.posts })
-          this.forceUpdate()
-        }
-      })
   }
   removeFromWall(postId) {
     this.setState(prev => {
@@ -99,13 +76,9 @@ class App extends Component {
     this.setState({ showUploadingForm: true });
     e.preventDefault();
   }
-  test(e) {
-    e.preventDefault();
-    console.log(this.state)
-  }
   renderWall() {
-    console.log('all posts')
-    console.log(this.state.allPosts)
+    //console.log('all posts')
+    //console.log(this.state.allPosts)
     var elements = this.state.allPosts;
     var childElements = elements.map((i, index) => {
       return <Post postData={i} key={i._id} isLoggedIn={this.state.isLoggedIn} removeFromWall={this.removeFromWall} currentUser={this.state.userName} />
