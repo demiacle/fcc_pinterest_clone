@@ -1,6 +1,6 @@
 # A Pinterest clone
-Built using two servers: **react** and **express**
+Built using **react** and **express**
 
-**React** server acts as a single page application and requests data through async calls to **express** server
+**React** is served as a single static page application and requests data through async calls to **express** server
 
-**Express** server handles OAuth sessions and responds to valid endpoints with JSON
+**Express** serves react page, handles OAuth sessions, and responds to valid endpoints with JSON
