@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./backend/bin/www",
-    "heroku-prebuild": "npm install --prefix ./backend | npm install --prefix ./frontend",
+    "heroku-prebuild":
+      "npm install --prefix ./backend | npm install --prefix ./frontend",
     "heroku-postbuild": "cd frontend && npm run build"
   }
 }
